@@ -2,8 +2,9 @@
 
 Métodos:
 
-```
-	/// <summary>
+**` getDerivatives`**
+```r
+    /// <summary>
     /// Retorna una lista de derivados
     /// </summary>
     /// <param name="marketSegmentId">(Optional) Id del segmento de mercado (Ej: "DDA", "MATBA", puede incluirse una cadena de búsqueda parcial)</param>
@@ -11,7 +12,9 @@ Métodos:
     /// <returns>Derivatives object Result.</returns>
     public async Task<Derivatives> getDerivatives(string marketSegmentId = null, string underlyingSymbol = null)
 ```
-```
+
+**` searchDerivatives`**
+```r
     /// <summary>
     /// Retorna una lista de derivados que contengan una cadena de búsqueda como parte del id.
     /// </summary>
