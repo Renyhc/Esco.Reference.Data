@@ -2,7 +2,8 @@
 
 Métodos:
 
-```
+**` getFields`**
+```r
     /// <summary>
     /// Devuelve la lista completa de fields.
     /// </summary>
@@ -10,7 +11,9 @@ Métodos:
     /// <returns> FieldsList object result.</returns>
     public async Task<FieldsList> getFields(string schema )        
 ```
-```
+
+**` getField`**
+```r
     /// <summary>
     /// Devuelve un field con un id específico.
     /// </summary>
