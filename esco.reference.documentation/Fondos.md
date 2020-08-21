@@ -2,7 +2,9 @@
 
 Fondos:
 
-```
+
+**` getFund`**
+```r
     /// <summary>
     /// Retorna un fondo por id
     /// </summary>
@@ -10,7 +12,9 @@ Fondos:
     /// <returns>Fund object result.</returns>
     public async Task<Fund> getFund(string id)
 ```
-```
+
+**` getFunds`**
+```r
     /// <summary>
     /// Retorna una lista de fondos filtrado por campos específicos
     /// </summary>
@@ -21,7 +25,9 @@ Fondos:
     /// <returns>Funds object Result.</returns>
     public async Task<Funds> getFunds(string managment = null, string depositary = null, string currency = null, string rentType = null)
 ```
-```
+
+**` searchFunds`**
+```r
     /// <summary>
     /// Retorna una lista de fondos que contengan una cadena de búsqueda como parte del id.
     /// </summary>
