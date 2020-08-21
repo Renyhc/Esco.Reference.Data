@@ -2,7 +2,8 @@
 
 Métodos:
 
-```
+**` getMapping`**
+```r
     /// <summary>
     /// Devuelve un mapping para un id específico.
     /// </summary>
@@ -11,7 +12,9 @@ Métodos:
     /// <returns> Mapping object result.</returns>
     public async Task<Mapping> getMapping(string id, string schema )      
 ```
-```	  
+
+**` getMappings`**
+```r
     /// <summary>
     /// Devuelve una lista de mappings.
     /// </summary>
