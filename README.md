@@ -10,7 +10,7 @@ Conector que se integra con el Servicio [**PMYDS - Reference Data de Primary**](
 - [Reference Data](esco.reference.documentation/ReferenceData.md)
 - [Instruments](esco.reference.documentation/Instruments.md)
 - [Fondos](esco.reference.documentation/Fondos.md)
-- [Schemas](esco.reference.documentation/Schemas)
+- [Schemas](esco.reference.documentation/Schemas.md)
 - [Fields](esco.reference.documentation/Fields.md)
 - [Types](esco.reference.documentation/Types.md)
 - [Mappings](esco.reference.documentation/Mappings.md)
