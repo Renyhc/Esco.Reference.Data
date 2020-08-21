@@ -13,7 +13,7 @@ Métodos:
 
 **` getSchemas`**
 ```r
-	/// <summary>
+    /// <summary>
     /// Devuelve la lista completa de esquemas.
     /// </summary>
     /// <returns> object result.</returns>
@@ -25,7 +25,7 @@ Métodos:
     /// <summary>
     /// Devuelve un esquema con un id específico.
     /// </summary>    
-	/// <param name="id">(Optional) Id del esquema. Si es null devuelve el esquema activo</param>
+    /// <param name="id">(Optional) Id del esquema. Si es null devuelve el esquema activo</param>
     /// <returns> object result.</returns>
 	public async Task<Schema> getSchemaId(string id )
 ```
