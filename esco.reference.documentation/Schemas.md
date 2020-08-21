@@ -2,21 +2,26 @@
 
 Métodos:
 
-```
-	/// <summary>
+**` getSchema`**
+```r
+    /// <summary>
     /// Devuelve el schema de trabajo actual.
     /// </summary>
     /// <returns> object result.</returns>
     public async Task<Schema> getSchema()
 ```
-```
+
+**` getSchemas`**
+```r
 	/// <summary>
     /// Devuelve la lista completa de esquemas.
     /// </summary>
     /// <returns> object result.</returns>
     public async Task<Schemas> getSchemas()
 ```
-```
+
+**` getSchemaId`**
+```r
     /// <summary>
     /// Devuelve un esquema con un id específico.
     /// </summary>    
@@ -24,7 +29,9 @@ Métodos:
     /// <returns> object result.</returns>
 	public async Task<Schema> getSchemaId(string id )
 ```
-```
+
+**` getPromoteSchema`**
+```r
     /// <summary>
     /// Verifica si la tarea de promover un schema se está ejecutando
     /// </summary>
