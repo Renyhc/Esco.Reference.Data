@@ -2,7 +2,8 @@
 
 Métodos:
 
-```
+**` getReferenceDataTodayUpdated`**
+```r
     /// <summary>
     /// Retorna la lista de instrumentos actualizados en el día.
     /// </summary>
@@ -11,7 +12,9 @@ Métodos:
     /// <returns>ReferenceDatas object result.</returns>
     public async Task<ReferenceDatas> getReferenceDataTodayUpdated(string type , string schema )
 ```
-```
+
+**` searchReferenceDataTodayUpdated`**
+```r
     /// <summary>
     /// Retorna la lista de instrumentos actualizados en el día que contengan una cadena de búsqueda como parte del id.
     /// </summary>
@@ -20,6 +23,8 @@ Métodos:
     /// <returns>ReferenceDatas object result.</returns>
     public async Task<ReferenceDatas> searchReferenceDataTodayUpdated(string id, string schema )  
 ```     
+
+**` getReferenceDataTodayAdded`**
 ``` 
     /// <summary>
     /// Retorna la lista de instrumentos dados de alta en el día.
@@ -29,7 +34,9 @@ Métodos:
     /// <returns>ReferenceDatas object result.</returns>
     public async Task<ReferenceDatas> getReferenceDataTodayAdded(string type , string schema )     
 ```   
-```
+
+**` searchReferenceDataTodayAdded`**
+```r
     /// <summary>
     /// Retorna la lista de instrumentos dados de alta en el día que contengan una cadena de búsqueda como parte del id.
     /// </summary>
@@ -38,7 +45,9 @@ Métodos:
     /// <returns>ReferenceDatas object result.</returns>
     public async Task<ReferenceDatas> searchReferenceDataTodayAdded(string id, string schema )
 ```
-```
+
+**` getReferenceDataTodayRemoved`**
+```r
     /// <summary>
     /// Retorna la lista de instrumentos dados de baja en el día.
     /// </summary>
@@ -47,7 +56,9 @@ Métodos:
     /// <returns>ReferenceDatas object result.</returns>
     public async Task <ReferenceDatas> getReferenceDataTodayRemoved(string type , string schema )     
 ```
-```   
+
+**` searchReferenceDataTodayRemoved`**
+```r
     /// <summary>
     /// Retorna la lista de instrumentos dados de baja en el día que contengan una cadena de búsqueda como parte del id.
     /// </summary>
@@ -56,7 +67,9 @@ Métodos:
     /// <returns>ReferenceDatas object result.</returns>
     public async Task<ReferenceDatas> searchReferenceDataTodayRemoved(string id, string schema )      
 ```
-``` 
+
+**` getReferenceDatas`**
+```r
     /// <summary>
     /// Retorna la lista de instrumentos financieros.
     /// </summary>
@@ -65,7 +78,9 @@ Métodos:
     /// <returns>ReferenceDatas object result.</returns>
     public async Task<ReferenceDatas> getReferenceDatas(string type , string schema )              
 ```
-``` 
+
+**` searchReferenceDatas`**
+```r
     /// <summary>
     /// Retorna los Instrumentos financieros que contengan una cadena de búsqueda como parte del id.
     /// </summary>
@@ -74,7 +89,9 @@ Métodos:
     /// <returns>ReferenceDatas object result.</returns>
     public async Task<ReferenceDatas> searchReferenceDatas(string id, string schema )     	
 ```
-```
+
+**` getReferenceDataSpecification`**
+```r
     /// <summary>
     /// Retorna una especificación del estado actual.
     /// </summary>
