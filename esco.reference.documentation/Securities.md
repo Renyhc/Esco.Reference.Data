@@ -2,7 +2,9 @@
 
 Métodos:
 
-```
+
+**` getSecuritie`**
+```r
     /// <summary>
     /// Retorna un titulo valor por id
     /// </summary>
@@ -10,7 +12,9 @@ Métodos:
     /// <returns> Securitie object result.</returns>
     public async Task<Securitie> getSecuritie(string id)
 ```
-```
+
+**` getSecurities`**
+```r
     /// <summary>
     /// Retorna una lista de títulos valores
     /// </summary>
