@@ -2,7 +2,8 @@
 
 Métodos:
 
-```
+**` getSourceFields`**
+```r
     /// <summary>
     /// Devuelve la lista completa de source fields.
     /// </summary>
@@ -10,7 +11,9 @@ Métodos:
     /// <returns> SourceFields  object result.</returns>
     public async Task<SourceFields> getSourceFields(string schema)    
 ```
-```    
+
+**` getSourceField`**
+```r
     /// <summary>
     /// Devuelve un source field con un id específico.
     /// </summary>
