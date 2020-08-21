@@ -27,7 +27,7 @@ Métodos:
     /// </summary>    
     /// <param name="id">(Optional) Id del esquema. Si es null devuelve el esquema activo</param>
     /// <returns> object result.</returns>
-	public async Task<Schema> getSchemaId(string id )
+    public async Task<Schema> getSchemaId(string id )
 ```
 
 **` getPromoteSchema`**
