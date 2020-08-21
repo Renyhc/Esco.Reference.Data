@@ -2,7 +2,8 @@
 
 Métodos:
 
-```
+**` getStatusProcesses`**
+```r
     /// <summary>
     /// Devuelve el estado de los procesos.
     /// </summary>
