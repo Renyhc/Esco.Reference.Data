@@ -1,6 +1,6 @@
 # Esco Reference Data
 
-[![N|Solid](http://devops.sisesco.com/Tecnolog%C3%ADa/bf9c73ea-4fa1-4396-a9fe-1751ac976148/_apis/git/repositories/eb74888a-32cd-422a-9ede-05a685b593cf/Items?path=%2Fesco.reference.documentation%2Fesco.png)](https://www.sistemasesco.com.ar)
+[![N|Solid](esco.png)](https://www.sistemasesco.com.ar)
 
 Conector que se integra con el Servicio [**PMYDS - Reference Data de Primary**](https://dataservices.primary.com.ar/product/#product=reference-data-read) que ofrece información de referencia de instrumentos financieros en forma consolidada.
 
@@ -20,7 +20,7 @@ Conector que se integra con el Servicio [**PMYDS - Reference Data de Primary**](
 - [Securities](Securities.md)
 
 **` ReferenceDataServices`**
-```sh
+```r
 /// <summary>
 /// Inicialización del servicio API de Reference Datas.
 /// </summary>
