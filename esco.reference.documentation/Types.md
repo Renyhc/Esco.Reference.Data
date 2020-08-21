@@ -37,6 +37,8 @@ Métodos:
     /// <returns> Types object result.</returns>
     public async Task<Types> getInstrumentTypes()      
 ```
+
+**` getPropertyOriginTypes`**
 ```r	
     /// <summary>
     /// Devuelve los tipos de origen para las propiedades de los instrumentos
@@ -44,6 +46,8 @@ Métodos:
     /// <returns> Types object result.</returns>
     public async Task<Types> getPropertyOriginTypes()       
 ```
+
+**` getSourceTypes`**
 ```r
     /// <summary>
     /// Devuelve los tipos de origen
