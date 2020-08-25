@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace esco.reference.data.Model
+namespace ESCO.Reference.Data.Model
 {
     public class Securities : List<Securitie> { }
     public class Securitie

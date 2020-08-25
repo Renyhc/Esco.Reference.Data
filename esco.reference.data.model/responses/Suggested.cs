@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace esco.reference.data.Model
+namespace ESCO.Reference.Data.Model
 {
     public class SuggestedFields : List<SuggestedField> { }
     public  class SuggestedField

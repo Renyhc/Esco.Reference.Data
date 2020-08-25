@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace esco.reference.data.Model
+namespace ESCO.Reference.Data.Model
 {
     public class Instruments : List<Instrument> { }    
     public class InstrumentsReport : List<InstrumentReport> { }

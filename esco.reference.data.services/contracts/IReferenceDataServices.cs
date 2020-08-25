@@ -1,9 +1,12 @@
 ﻿using System;
-using esco.reference.data.Model;
+using ESCO.Reference.Data.Model;
 using System.Threading.Tasks;
 
-namespace esco.reference.data.Services.Contracts
-{  
+namespace ESCO.Reference.Data.Services.Contracts
+{
+    /// <summary>
+    /// Interface Reference Datas Services
+    /// </summary>  
     public interface IReferenceDataServices
     {
         void changeSuscriptionKey(string key);      //Cambiar la Suscription Key del usuario
@@ -90,6 +93,19 @@ namespace esco.reference.data.Services.Contracts
         Task<ODataObject> getODataReferenceDatas(string query, string schema);  // Retorna la lista de instrumentos filtrados con OData.
         Task<ODataObject> getODataReferenceDatasById(string id, string schema); // Retorna la lista de instrumentos filtrados por Id.
         Task<ODataObject> searchODataReferenceDatas(string type, string currency, string symbol, string market, string country, string schema); // Retorna la lista de instrumentos filtrados por campos específicos (puede incluirse cadenas de búsqueda parcial).
-        #endregion 
+        #endregion
+
+        #region ESCO
+        Task<Custodians> getCustodians(string schema);      // Retorna la lista de Sociedades Depositarias  
+        Task<Managments> getManagements(string schema);     // Retorna la lista de Sociedades Administradoras
+        Task<Rents> getRentType(string schema);             // Retorna la lista de Tipos de Rentas      
+        Task<Regions> getRegions(string schema);            // Retorna la lista de Regiones      
+        Task<Currencys> getCurrencys(string schema);        // Retorna la lista de Monedas      
+        Task<Countrys> getCountrys(string schema);          // Retorna la lista de Países      
+        Task<Issuers> getIssuers(string schema);            // Retorna la lista de Issuers  
+        Task<Horizons> getHorizons(string schema);          // Retorna la lista de Horizon 
+        Task<FundTypes> getFundTypes(string schema);        // Retorna la lista de Tipos de Fondos
+        Task<Benchmarks> getBenchmarks(string schema);      // Retorna la lista de Benchmarks
+        #endregion
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace esco.reference.data.Services
+namespace ESCO.Reference.Data.Services
 {
     #region API
     class API
@@ -237,6 +237,19 @@ namespace esco.reference.data.Services
 
         #region OData
         public static string OData = API.v2 + "/api/schema/{0}/refdata";    //Retorna una lista de instrumentos filtrados con OData
-        #endregion 
+        #endregion
+
+        #region ESCO
+        public static string Depositary     = "?$filter=type eq 'MF' & $select=FundCustodianId,FundCustodianName & $count=true & apply=groupby((FundCustodianId))";     //Retorna la lista de Sociedades Depositarias
+        public static string Managment      = "?$filter=type eq 'MF' & $select=FundManagerId,FundManagerName & $count=true & apply=groupby((FundManagerId))";           //Retorna la lista de Sociedades Administradoras 
+        public static string RentType       = "?$filter=type eq 'MF' & $select=RentTypeId,RentTypeName & $count=true & apply=groupby((RentTypeId))";                    //Retorna la lista de Tipos de Renta    
+        public static string Region         = "?$filter=type eq 'MF' & $select=RegionId,RegionName & $count=true & apply=groupby((RegionId))";                          //Retorna la lista de Regiones 
+        public static string Currency       = "?$select=Currency & $count=true & apply=groupby((Currency))";                                                            //Retorna la lista de Monedas    
+        public static string Country        = "?$select=Country & $count=true & apply=groupby((Country))";                                                              //Retorna la lista de Países    
+        public static string Issuer         = "?$select=Issuer & $count=true & apply=groupby((Issuer))";                                                                //Retorna la lista de Issuer    
+        public static string Horizon        = "?$filter=type eq 'MF' & $select=HorizonId,HorizonName & $count=true & apply=groupby((HorizonId))";                       //Retorna la lista de Horizon 
+        public static string FundType       = "?$filter=type eq 'MF' & $select=FundTypeId,FundTypeName & $count=true & apply=groupby((FundTypeId))";                    //Retorna la lista de Tipos de Fondos 
+        public static string Benchmark      = "?$filter=type eq 'MF' & $select=FundBenchmarkId,FundBenchmarkName & $count=true & apply=groupby((FundBenchmarkId))";     //Retorna la lista de Benchmarks 
+        #endregion
     }
 }

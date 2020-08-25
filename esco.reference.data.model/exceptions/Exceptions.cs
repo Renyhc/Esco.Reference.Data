@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace esco.reference.data.Model
+namespace ESCO.Reference.Data.Model
 {
     public class SuscriptionKeyEmpty : Exception
     {

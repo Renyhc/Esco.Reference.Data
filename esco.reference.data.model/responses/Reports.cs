@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace esco.reference.data.Model
+namespace ESCO.Reference.Data.Model
 {
     public class Reports : List<Report> { }
     public class Report 

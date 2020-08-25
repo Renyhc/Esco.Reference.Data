@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using esco.reference.data.Model;
-using esco.reference.data.Services.Contracts;
-using Newtonsoft.Json;
+using ESCO.Reference.Data.Model;
+using ESCO.Reference.Data.Services.Contracts;
 
-namespace esco.reference.data.Services
+namespace ESCO.Reference.Data.Services
 {
     /// <summary>
     /// Servicios Reference Datas Conector que se integra con el Servicio PMYDS - Reference Data de Primary .
@@ -933,7 +933,288 @@ namespace esco.reference.data.Services
                 throw e;
             }
         }
-        
+
+        #endregion
+
+        #region ESCO
+
+        /// <summary>
+        /// Retorna la lista de Sociedades Depositarias o Custodia de Fondos
+        /// </summary>
+        /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
+        /// <returns>Depositary object Result.</returns>
+        public async Task<Custodians> getCustodians(string schema = null)
+        {
+            try
+            {
+                schema = (schema == null) ? "2" : schema;
+                Custodians despositarys = new Custodians();
+                Custodians rest = await _httpClient.getCustodians(schema);
+                if (rest != null && rest.value.Count > 0)
+                {
+                    despositarys.value = rest.value
+                        .GroupBy(x => x.FundCustodianId)
+                        .Select(x => x.First())
+                        .OrderBy(x => Int32.Parse(x.FundCustodianId))
+                        .ToList();
+                }
+                return despositarys;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        /// <summary>
+        /// Retorna la lista de Sociedades Administradoras de Fondos  
+        /// </summary>
+        /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
+        /// <returns>Managers object Result.</returns>
+        public async Task<Managments> getManagements(string schema = null)
+        {
+            try
+            {
+                schema = (schema == null) ? "2" : schema;
+                Managments managments = new Managments();
+                Managments rest = await _httpClient.getManagements(schema);
+                if (rest != null && rest.value.Count > 0)
+                {
+                    managments.value = rest.value
+                        .GroupBy(x => x.FundManagerId)
+                        .Select(x => x.First())
+                        .OrderBy(x => Int32.Parse(x.FundManagerId))
+                        .ToList();
+                }
+                return managments;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        /// <summary>
+        /// Retorna la lista de Tipos de Rentas
+        /// </summary>
+        /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
+        /// <returns>Rents object Result.</returns>
+        public async Task<Rents> getRentType(string schema = null)
+        {
+            try
+            {
+                schema = (schema == null) ? "2" : schema;
+                Rents managments = new Rents();
+                Rents rest = await _httpClient.getRentType(schema);
+                if (rest != null && rest.value.Count > 0)
+                {
+                    managments.value = rest.value
+                        .GroupBy(x => x.RentTypeId)
+                        .Select(x => x.First())
+                        .OrderBy(x => Int32.Parse(x.RentTypeId))
+                        .ToList();
+                }
+                return managments;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        /// <summary>
+        /// Retorna la lista de Regiones
+        /// </summary>
+        /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
+        /// <returns>Regions object Result.</returns>
+        public async Task<Regions> getRegions(string schema = null)
+        {
+            try
+            {
+                schema = (schema == null) ? "2" : schema;
+                Regions regions = new Regions();
+                Regions rest = await _httpClient.getRegions(schema);
+                if (rest != null && rest.value.Count > 0)
+                {
+                    regions.value = rest.value
+                        .GroupBy(x => x.RegionId)
+                        .Select(x => x.First())
+                        .OrderBy(x => Int32.Parse(x.RegionId))
+                        .ToList();
+                }
+                return regions;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        /// <summary>
+        /// Retorna la lista de Monedas  
+        /// </summary>
+        /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
+        /// <returns>Currencys object Result.</returns>
+        public async Task<Currencys> getCurrencys(string schema = null)
+        {
+            try
+            {
+                schema = (schema == null) ? "2" : schema;
+                Currencys currencys = new Currencys();
+                Currencys rest = await _httpClient.getCurrencys(schema);
+                if (rest != null && rest.value.Count > 0)
+                {
+                    currencys.value = rest.value
+                        .GroupBy(x => x.Currency)
+                        .Select(x => x.First())
+                        .ToList();
+                }
+                return currencys;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        /// <summary>
+        /// Retorna la lista de Países  
+        /// </summary>
+        /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
+        /// <returns>Countrys object Result.</returns>
+        public async Task<Countrys> getCountrys(string schema = null)
+        {
+            try
+            {
+                schema = (schema == null) ? "2" : schema;
+                Countrys countrys = new Countrys();
+                Countrys rest = await _httpClient.getCountrys(schema);
+                if (rest != null && rest.value.Count > 0)
+                {
+                    countrys.value = rest.value
+                        .GroupBy(x => x.Country)
+                        .Select(x => x.First())
+                        .ToList();
+                }
+                return countrys;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        /// <summary>
+        /// Retorna la lista de Issuers 
+        /// </summary>
+        /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
+        /// <returns>Issuers object Result.</returns>
+        public async Task<Issuers> getIssuers(string schema = null)
+        {
+            try
+            {
+                schema = (schema == null) ? "2" : schema;
+                Issuers issuers = new Issuers();
+                Issuers rest = await _httpClient.getIssuers(schema);
+                if (rest != null && rest.value.Count > 0)
+                {
+                    issuers.value = rest.value
+                        .GroupBy(x => x.Issuer)
+                        .Select(x => x.First())
+                        .ToList();
+                }
+                return issuers;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        /// <summary>
+        /// Retorna la lista de Horizons
+        /// </summary>
+        /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
+        /// <returns>Horizons object Result.</returns>
+        public async Task<Horizons> getHorizons(string schema = null)
+        {
+            try
+            {
+                schema = (schema == null) ? "2" : schema;
+                Horizons horizons = new Horizons();
+                Horizons rest = await _httpClient.getHorizons(schema);
+                if (rest != null && rest.value.Count > 0)
+                {
+                    horizons.value = rest.value
+                        .GroupBy(x => x.HorizonId)
+                        .Select(x => x.First())
+                        .OrderBy(x => Int32.Parse(x.HorizonId))
+                        .ToList();
+                }
+                return horizons;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        /// <summary>
+        /// Retorna la lista de Tipos de Fondos
+        /// </summary>
+        /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
+        /// <returns>FundTypes object Result.</returns>
+        public async Task<FundTypes> getFundTypes(string schema = null)
+        {
+            try
+            {
+                schema = (schema == null) ? "2" : schema;
+                FundTypes types = new FundTypes();
+                FundTypes rest = await _httpClient.getFundTypes(schema);
+                if (rest != null && rest.value.Count > 0)
+                {
+                    types.value = rest.value
+                        .GroupBy(x => x.FundTypeId)
+                        .Select(x => x.First())
+                        .OrderBy(x => Int32.Parse(x.FundTypeId))
+                        .ToList();
+                }
+                return types;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        /// <summary>
+        /// Retorna la lista de Benchmarks
+        /// </summary>
+        /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
+        /// <returns>Benchmarks object Result.</returns>
+        public async Task<Benchmarks> getBenchmarks(string schema = null)
+        {
+            try
+            {
+                schema = (schema == null) ? "2" : schema;
+                Benchmarks benchmarks = new Benchmarks();
+                Benchmarks rest = await _httpClient.getBenchmarks(schema);
+                if (rest != null && rest.value.Count > 0)
+                {
+                    benchmarks.value = rest.value
+                        .GroupBy(x => x.FundBenchmarkId)
+                        .Select(x => x.First())
+                        .OrderBy(x => Int32.Parse(x.FundBenchmarkId))
+                        .ToList();
+                }
+                return benchmarks;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         #endregion 
     }
 }
