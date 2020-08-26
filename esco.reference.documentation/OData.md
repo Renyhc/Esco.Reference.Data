@@ -66,14 +66,14 @@ Métodos:
     public async Task<Managments> getManagements(string schema = null)    
 ```
 
-**` getRegions`**
+**` getRentType`**
 ``` 
     /// <summary>    
     /// Retorna la lista de Tipos de Rentas    
     /// </summary>    
     /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>    
     /// <returns>Rents object Result.</returns>    
-	public async Task<Regions> getRegions(string schema = null)
+	public async Task<Rents> getRentType(string schema = null)
 ``` 
 
 **` getRegions`**
