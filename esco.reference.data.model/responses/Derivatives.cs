@@ -5,6 +5,13 @@ using System.Collections.Generic;
 namespace ESCO.Reference.Data.Model
 {
     public class Derivatives : List<Derivative> { }
+
+    public class DerivativesList
+    {
+        [JsonProperty("value")]
+        public List<Derivative> value { get; set; }
+    }
+
     public class Derivative
     {
         [JsonProperty("id")]

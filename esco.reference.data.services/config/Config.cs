@@ -2,135 +2,6 @@
 
 namespace ESCO.Reference.Data.Services
 {
-    #region API
-    class API
-    {
-        private static string _ver { get; set; }
-        public static string ver
-        {           
-            get
-            {
-                return "prd-" + ((_ver == "demo") ? _ver : "ro");
-            }
-            set
-            {
-                _ver = value;
-            }
-        }        
-
-        public static string v1
-        {
-            get { return "/v1"; }
-        }
-
-        public static string v2
-        {
-            get { return "/v2"; }
-        }
-
-        //Format Url with Filters
-        public static string getUrl(string cfg, string type, string source, string schema)
-        {
-            string url = String.Format(cfg, schema);
-            if ((type != null) && (source != null))
-            {
-                url = String.Format(cfg + Config.FilterBoth, schema, type, source);
-            }
-            else
-            {
-                url = (type != null) ? String.Format(cfg + Config.FilterType, schema, type) : url;
-                url = (source != null) ? String.Format(cfg + Config.FilterSource, schema, source) : url;
-            }
-            return url;
-        }
-
-        public static string getUrlDerivatives(string market, string symbol)
-        {
-            string url = Config.Derivatives;
-            string empty = String.Empty;
-            string and = " and ";
-            string filter = "?$filter=";
-
-            string urlStr = (market != null) ? filter + String.Format(Config.FilterMarket, market) : empty;
-
-            string urlSymbol = String.Format(Config.FilterSymbol, symbol);
-            string urlSymbolFilter = (symbol != null) ? filter + urlSymbol : empty;
-            string urlSymbolAnd = (symbol != null) ? and + urlSymbol : empty;
-
-            urlStr = urlStr + ((urlStr == empty) ? urlSymbolFilter : urlSymbolAnd);
-
-            return url + urlStr;
-        }
-
-        public static string getUrlFunds(string management, string despositary, string currency, string rent)
-        {
-            string url = Config.Funds;            
-            string empty = String.Empty;
-            string and = " and ";
-            string filter = "?$filter=";
-
-            string urlStr = (management != null) ? filter + String.Format(Config.FilterManagment, management) : empty;
-
-            string urlDespositary = String.Format(Config.FilterDepositary, despositary);
-            string urlDespositaryFilter = (despositary != null) ? filter  + urlDespositary : empty;
-            string urlDespositaryAnd = (despositary != null) ? and + urlDespositary : empty;
-
-            string urlCurrency = String.Format(Config.FilterCurrencyCode, currency);
-            string urlCurrencyFilter = (currency != null) ? filter + urlCurrency : empty;
-            string urlCurrencyAnd = (currency != null) ? and + urlCurrency : empty;
-
-            string urlRent = String.Format(Config.FilterRent, rent);
-            string urlRentFilter = (rent != null) ? filter + urlRent : empty;
-            string urlRentAnd = (rent != null) ? and + urlRent : empty;
-
-            urlStr = urlStr + ((urlStr == empty) ? urlDespositaryFilter : urlDespositaryAnd);
-            urlStr = urlStr + ((urlStr == empty) ? urlCurrencyFilter : urlCurrencyAnd);
-            urlStr = urlStr + ((urlStr == empty) ? urlRentFilter : urlRentAnd);
-           
-            return url + urlStr;
-        }
-
-        public static string getUrlOData(
-            string type,
-            string currency,
-            string symbol,
-            string market,
-            string country,
-            string schema)
-        {
-            string url = String.Format(Config.OData, schema);
-            string empty = String.Empty;
-            string and = " and ";
-            string filter = "?$filter=";
-
-            string urlStr = (type != null) ? filter + String.Format(Config.FilterTypeSearch, type) : empty;
-
-            string urlCurrency = String.Format(Config.FilterCurrency, currency);
-            string urlCurrencyFilter = (currency != null) ? filter + urlCurrency : empty;
-            string urlCurrencyAnd = (currency != null) ? and + urlCurrency : empty;
-
-            string urlSymbol = String.Format(Config.FilterUnderSymbol, symbol);
-            string urlSymbolFilter = (symbol != null) ? filter + urlSymbol : empty;
-            string urlSymbolAnd = (symbol != null) ? and + urlSymbol : empty;
-
-            string urlMarket = String.Format(Config.FilterMarketId, market);
-            string urlMarketFilter = (market != null) ? filter + urlMarket : empty;
-            string urlMarketAnd = (market != null) ? and + urlMarket : empty;
-
-            string urlCountry = String.Format(Config.FilterCountry, country);
-            string urlCountryFilter = (country != null) ? filter + urlCountry : empty;
-            string urlCountryAnd = (country != null) ? and + urlCountry : empty;
-            
-            urlStr = urlStr + ((urlStr == empty) ? urlCurrencyFilter : urlCurrencyAnd);
-            urlStr = urlStr + ((urlStr == empty) ? urlSymbolFilter : urlSymbolAnd);
-            urlStr = urlStr + ((urlStr == empty) ? urlMarketFilter : urlMarketAnd);
-            urlStr = urlStr + ((urlStr == empty) ? urlCountryFilter : urlCountryAnd);
-
-            return url + urlStr;
-        }
-    }
-    #endregion
-
     class Config
     {   
         public static string url = "https://apids.primary.com.ar/";
@@ -143,25 +14,38 @@ namespace ESCO.Reference.Data.Services
             public static string xversion = "X-Version";
         }
 
-        //Filters
+        #region Filters
+
+        //Generals Filters
         public static string FilterId           = "?$filter=indexof(id, '{1}') ne -1";
         public static string FilterType         = "?$filter=type eq {1}";
         public static string FilterTypeStr      = "?$filter=type eq '{1}'";
         public static string FilterSource       = "?$filter=source eq {1}";
         public static string FilterSourceStr    = "?$filter=source eq '{1}'";
         public static string FilterBoth         = "?$filter=type eq {1} and source eq {2}";
+        public static string FilterBothStr      = "?$filter=type eq '{1}' and source eq '{2}'";
 
+        //Filters Derivatives
         public static string FilterMarket       = "indexof(marketSegmentId, '{0}') ne -1";
-        public static string FilterSymbol       = "indexof(underlyingSymbol, '{0}') ne -1";   
-        public static string FilterTypeSearch   = "indexof(type, '{0}') ne -1";
-        public static string FilterManagment    = "indexof(managementSocietyName, '{0}') ne -1";
-        public static string FilterDepositary   = "indexof(despositarySocietyName, '{0}') ne -1";        
+        public static string FilterSymbol       = "indexof(underlyingSymbol, '{0}') ne -1";
+
+        //Filters Funds
+        public static string FilterManagment    = "managementSocietyId eq '{0}'";
+        public static string FilterDepositary   = "despositarySocietyId eq '{0}'";
         public static string FilterCurrencyCode = "indexof(currencyCode, '{0}') ne -1";
+        public static string FilterRent         = "rentTypeId eq '{0}'";
+        public static string FilterManagmentStr = "indexof(managementSocietyName, '{0}') ne -1";
+        public static string FilterDepositaryStr= "indexof(despositarySocietyName, '{0}') ne -1";        
+        public static string FilterRentStr      = "indexof(rentTypeName, '{0}') ne -1";
+
+        //Filters OData
+        public static string FilterTypeSearch   = "indexof(type, '{0}') ne -1";
         public static string FilterCurrency     = "indexof(Currency, '{0}') ne -1";
-        public static string FilterUnderSymbol  = "indexof(UnderlyingSymbol, '{0}') ne -1";
-        public static string FilterRent         = "indexof(rentTypeName, '{0}') ne -1";
+        public static string FilterUnderSymbol  = "indexof(UnderlyingSymbol, '{0}') ne -1";        
         public static string FilterMarketId     = "indexof(MarketId, '{0}') ne -1";
         public static string FilterCountry      = "indexof(Country, '{0}') ne -1";
+
+        #endregion
 
         #region Schemas
         public static string WorkingSchema  = API.v2 + "/api/Schemas/working-schema";               //Devuelve el schema de trabajo actual.
@@ -222,7 +106,7 @@ namespace ESCO.Reference.Data.Services
         #endregion
 
         #region Derivatives
-        public static string Derivatives = API.v1 + "/api/Derivatives";     //Retorna una lista de derivados
+        public static string Derivatives        = API.v1 + "/api/Derivatives";   
         #endregion
 
         #region Funds
@@ -250,6 +134,9 @@ namespace ESCO.Reference.Data.Services
         public static string Horizon        = "?$filter=type eq 'MF' & $select=HorizonId,HorizonName & $count=true & apply=groupby((HorizonId))";                       //Retorna la lista de Horizon 
         public static string FundType       = "?$filter=type eq 'MF' & $select=FundTypeId,FundTypeName & $count=true & apply=groupby((FundTypeId))";                    //Retorna la lista de Tipos de Fondos 
         public static string Benchmark      = "?$filter=type eq 'MF' & $select=FundBenchmarkId,FundBenchmarkName & $count=true & apply=groupby((FundBenchmarkId))";     //Retorna la lista de Benchmarks 
+        public static string RDTypes        = "?$select=type & $count=true & apply=groupby((type))";                                                                    //Retorna la lista de Tipos de Reference Data 
+        public static string RDSymbols      = "?$select=UnderlyingSymbol & $count=true & apply=groupby((UnderlyingSymbol))";                                            //Retorna la lista de Símbolos (UnderlyingSymbol) de Instrumentos financieros
+        public static string Markets        = "?$select=MarketId & $count=true & apply=groupby((MarketId))";                                                            //Retorna la lista de Mercados para los Instrumentos financieros
         #endregion
     }
 }

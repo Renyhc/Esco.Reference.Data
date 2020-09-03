@@ -18,7 +18,25 @@ Métodos:
     /// <summary>
     /// Retorna una lista de derivados que contengan una cadena de búsqueda como parte del id.
     /// </summary>
-    /// <param name="id">(Requeried) Cadena de búsqueda de los Derivadis a filtrar.</param>        
+    /// <param name="id">(Requeried) Cadena de búsqueda del Id de los Derivados a filtrar.</param>        
     /// <returns>Instruments object Result.</returns>
     public async Task<Derivatives> searchDerivatives(string id)
+```
+
+**` getMarketSegments`**
+```
+    /// <summary>
+    /// Retorna una lista de Segmentos de mercado de derivados (MarketSegmentId).
+    /// </summary>       
+    /// <returns>MarketSegments object Result.</returns>
+    public async Task<MarketSegments> getMarketSegments()
+```
+
+**` getUnderlyingSymbols`**
+```
+	/// <summary>
+    /// Retorna una lista de Símbolos de derivados (underlyingSymbol).
+    /// </summary>       
+    /// <returns>MarketSegments object Result.</returns>
+    public async Task<UnderlyingSymbols> getUnderlyingSymbols()
 ```

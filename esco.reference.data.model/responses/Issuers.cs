@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 
 namespace ESCO.Reference.Data.Model
-{     
-    public class Issuers
+{
+    public class Issuers : List<IssuerValue> { }
+    public class IssuersList
     {
         [JsonProperty("value")]
         public List<IssuerValue> value { get; set; }

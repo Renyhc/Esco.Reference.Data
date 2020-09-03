@@ -429,7 +429,7 @@ namespace ESCO.Reference.Data.Services
                     .WithHeader(Config.Header.key, _key).As<Derivatives>();
                 return rest;
             }
-        }
+        }              
         #endregion
 
         #region Funds
@@ -506,33 +506,33 @@ namespace ESCO.Reference.Data.Services
         #region OData
 
         //Retorna la lista de instrumentos filtrados con OData.
-        public async Task<ODataObject> getODataReferenceDatas(string query, string schema)
+        public async Task<ODataList> getODataReferenceDatas(string query, string schema)
         {            
             string url = String.Format(Config.OData + query, schema);
             using (var client = new FluentClient(_baseUrl))
             {
                 var rest = await client.GetAsync(API.ver + url)
                     .WithHeader(Config.Header.cache, Config.cache)
-                    .WithHeader(Config.Header.key, _key).As<ODataObject>();
+                    .WithHeader(Config.Header.key, _key).As<ODataList>();
                 return rest;
             }
         }
 
         //Retorna la lista de instrumentos filtrados por Id
-        public async Task<ODataObject> getODataReferenceDatasById(string id, string schema)
+        public async Task<ODataList> getODataReferenceDatasById(string id, string schema)
         {
             string url = String.Format(Config.OData + Config.FilterId, schema, id);
             using (var client = new FluentClient(_baseUrl))
             {
                 var rest = await client.GetAsync(API.ver + url)
                     .WithHeader(Config.Header.cache, Config.cache)
-                    .WithHeader(Config.Header.key, _key).As<ODataObject>();
+                    .WithHeader(Config.Header.key, _key).As<ODataList>();
                 return rest;
             }
         }
 
         //Retorna la lista de instrumentos filtrados por campos específicos (puede incluirse cadenas de búsqueda parcial).
-        public async Task<ODataObject> searchODataReferenceDatas(
+        public async Task<ODataList> searchODataReferenceDatas(
             string type,
             string currency,
             string symbol,
@@ -545,7 +545,7 @@ namespace ESCO.Reference.Data.Services
             {
                 var rest = await client.GetAsync(API.ver + url)
                     .WithHeader(Config.Header.cache, Config.cache)
-                    .WithHeader(Config.Header.key, _key).As<ODataObject>();
+                    .WithHeader(Config.Header.key, _key).As<ODataList>();
                 return rest;
             }
         }
@@ -555,131 +555,170 @@ namespace ESCO.Reference.Data.Services
         #region ESCO
 
         // Retorna la lista de Sociedades Depositarias o Custodia de Fondos
-        public async Task<Custodians> getCustodians(string schema)
+        public async Task<CustodiansList> getCustodians(string schema)
         {
             string url = String.Format(Config.OData + Config.Depositary, schema);
             using (var client = new FluentClient(_baseUrl))
             {
                 var rest = await client.GetAsync(API.ver + url)
                     .WithHeader(Config.Header.cache, Config.cache)
-                    .WithHeader(Config.Header.key, _key).As<Custodians>();
+                    .WithHeader(Config.Header.key, _key).As<CustodiansList>();
                 return rest;
             }
         }
 
         // Retorna la lista de Sociedades Administradoras de Fondos
-        public async Task<Managments> getManagements(string schema)
+        public async Task<ManagmentsList> getManagements(string schema)
         {
             string url = String.Format(Config.OData + Config.Managment, schema);
             using (var client = new FluentClient(_baseUrl))
             {
                 var rest = await client.GetAsync(API.ver + url)
                     .WithHeader(Config.Header.cache, Config.cache)
-                    .WithHeader(Config.Header.key, _key).As<Managments>();
+                    .WithHeader(Config.Header.key, _key).As<ManagmentsList>();
                 return rest;
             }
         }
 
         // Retorna la lista de Tipos de Rentas
-        public async Task<Rents> getRentType(string schema)
+        public async Task<RentsList> getRentTypes(string schema)
         {
             string url = String.Format(Config.OData + Config.RentType, schema);
             using (var client = new FluentClient(_baseUrl))
             {
                 var rest = await client.GetAsync(API.ver + url)
                     .WithHeader(Config.Header.cache, Config.cache)
-                    .WithHeader(Config.Header.key, _key).As<Rents>();
+                    .WithHeader(Config.Header.key, _key).As<RentsList>();
                 return rest;
             }
         }
 
         // Retorna la lista de Regiones
-        public async Task<Regions> getRegions(string schema)
+        public async Task<RegionsList> getRegions(string schema)
         {
             string url = String.Format(Config.OData + Config.Region, schema);
             using (var client = new FluentClient(_baseUrl))
             {
                 var rest = await client.GetAsync(API.ver + url)
                     .WithHeader(Config.Header.cache, Config.cache)
-                    .WithHeader(Config.Header.key, _key).As<Regions>();
+                    .WithHeader(Config.Header.key, _key).As<RegionsList>();
                 return rest;
             }
         }
 
         // Retorna la lista de Monedas
-        public async Task<Currencys> getCurrencys(string schema)
+        public async Task<CurrencysList> getCurrencys(string schema)
         {
             string url = String.Format(Config.OData + Config.Currency, schema);
             using (var client = new FluentClient(_baseUrl))
             {
                 var rest = await client.GetAsync(API.ver + url)
                     .WithHeader(Config.Header.cache, Config.cache)
-                    .WithHeader(Config.Header.key, _key).As<Currencys>();
+                    .WithHeader(Config.Header.key, _key).As<CurrencysList>();
                 return rest;
             }
         }
 
         // Retorna la lista de Países
-        public async Task<Countrys> getCountrys(string schema)
+        public async Task<CountrysList> getCountrys(string schema)
         {
             string url = String.Format(Config.OData + Config.Country, schema);
             using (var client = new FluentClient(_baseUrl))
             {
                 var rest = await client.GetAsync(API.ver + url)
                     .WithHeader(Config.Header.cache, Config.cache)
-                    .WithHeader(Config.Header.key, _key).As<Countrys>();
+                    .WithHeader(Config.Header.key, _key).As<CountrysList>();
                 return rest;
             }
         }
 
         // Retorna la lista de Issuers
-        public async Task<Issuers> getIssuers(string schema)
+        public async Task<IssuersList> getIssuers(string schema)
         {
             string url = String.Format(Config.OData + Config.Issuer, schema);
             using (var client = new FluentClient(_baseUrl))
             {
                 var rest = await client.GetAsync(API.ver + url)
                     .WithHeader(Config.Header.cache, Config.cache)
-                    .WithHeader(Config.Header.key, _key).As<Issuers>();
+                    .WithHeader(Config.Header.key, _key).As<IssuersList>();
                 return rest;
             }
         }
 
         // Retorna la lista de Horizons
-        public async Task<Horizons> getHorizons(string schema)
+        public async Task<HorizonsList> getHorizons(string schema)
         {
             string url = String.Format(Config.OData + Config.Horizon, schema);
             using (var client = new FluentClient(_baseUrl))
             {
                 var rest = await client.GetAsync(API.ver + url)
                     .WithHeader(Config.Header.cache, Config.cache)
-                    .WithHeader(Config.Header.key, _key).As<Horizons>();
+                    .WithHeader(Config.Header.key, _key).As<HorizonsList>();
                 return rest;
             }
         }
 
         // Retorna la lista de Tipos de Fondos
-        public async Task<FundTypes> getFundTypes(string schema)
+        public async Task<FundTypesList> getFundTypes(string schema)
         {
             string url = String.Format(Config.OData + Config.FundType, schema);
             using (var client = new FluentClient(_baseUrl))
             {
                 var rest = await client.GetAsync(API.ver + url)
                     .WithHeader(Config.Header.cache, Config.cache)
-                    .WithHeader(Config.Header.key, _key).As<FundTypes>();
+                    .WithHeader(Config.Header.key, _key).As<FundTypesList>();
                 return rest;
             }
         }
 
         // Retorna la lista de Issuers
-        public async Task<Benchmarks> getBenchmarks(string schema)
+        public async Task<BenchmarksList> getBenchmarks(string schema)
         {
             string url = String.Format(Config.OData + Config.Benchmark, schema);
             using (var client = new FluentClient(_baseUrl))
             {
                 var rest = await client.GetAsync(API.ver + url)
                     .WithHeader(Config.Header.cache, Config.cache)
-                    .WithHeader(Config.Header.key, _key).As<Benchmarks>();
+                    .WithHeader(Config.Header.key, _key).As<BenchmarksList>();
+                return rest;
+            }
+        }
+
+        // Retorna la lista de Tipos de Instrumentos financieros
+        public async Task<ReferenceDataTypesList> getReferenceDataTypes(string schema)
+        {
+            string url = String.Format(Config.OData + Config.RDTypes, schema);
+            using (var client = new FluentClient(_baseUrl))
+            {
+                var rest = await client.GetAsync(API.ver + url)
+                    .WithHeader(Config.Header.cache, Config.cache)
+                    .WithHeader(Config.Header.key, _key).As<ReferenceDataTypesList>();
+                return rest;
+            }
+        }
+
+        // Retorna la lista de Símbolos (UnderlyingSymbol) de Instrumentos financieros
+        public async Task<ReferenceDataSymbolsList> getReferenceDataSymbols(string schema)
+        {
+            string url = String.Format(Config.OData + Config.RDSymbols, schema);
+            using (var client = new FluentClient(_baseUrl))
+            {
+                var rest = await client.GetAsync(API.ver + url)
+                    .WithHeader(Config.Header.cache, Config.cache)
+                    .WithHeader(Config.Header.key, _key).As<ReferenceDataSymbolsList>();
+                return rest;
+            }
+        }
+
+        // Retorna la lista de Mercados para los Instrumentos financieros
+        public async Task<MarketsList> getMarkets(string schema)
+        {
+            string url = String.Format(Config.OData + Config.Markets, schema);
+            using (var client = new FluentClient(_baseUrl))
+            {
+                var rest = await client.GetAsync(API.ver + url)
+                    .WithHeader(Config.Header.cache, Config.cache)
+                    .WithHeader(Config.Header.key, _key).As<MarketsList>();
                 return rest;
             }
         }

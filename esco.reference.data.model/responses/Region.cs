@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 
 namespace ESCO.Reference.Data.Model
-{     
-    public class Regions
+{
+    public class Regions : List<Region> { }
+
+    public class RegionsList
     {
         [JsonProperty("value")]
         public List<Region> value { get; set; }

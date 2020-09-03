@@ -42,11 +42,79 @@ namespace ESCO.Reference.Data.Services
             return _schema.id;
         }
 
-        private async Task<string> getTypes(string source)
+        private async Task<string> getSourceType(string value, bool type)
+        {           
+            try
+            {
+                Int32.Parse(value);                
+            }
+            catch
+            {
+                Types _type = (type)? await _httpClient.getInstrumentTypes(): 
+                    await _httpClient.getSourceTypes();
+                if (_type.Count > 0)
+                {
+                    TypeField types = _type.Where(s => s.description == value).FirstOrDefault();
+                    value = (types != null) ? types.code.ToString() : value;
+                }
+            }
+            return value;
+        }
+        private async Task<string> getSourceReport(string value)
         {
-            Types sourceType = await _httpClient.getSourceTypes();
-            TypeField types = sourceType.Where(s => s.description == source).FirstOrDefault();
-            return types?.code.ToString();           
+            try
+            {
+                int intValue = Int32.Parse(value);
+                Types _type = await _httpClient.getSourceTypes();
+                if (_type.Count > 0)
+                {
+                    TypeField types = _type.Where(s => s.code == intValue).FirstOrDefault();
+                    value = (types != null) ? types.description : value;
+                }
+            }
+            catch
+            {
+                //
+            }
+            return value;
+        }
+
+        private async Task<string> getMarketsTypes(string value)
+        {
+            try
+            {
+                int intValue = Int32.Parse(value);
+                Types _markets = await _httpClient.getSourceTypes();
+                if (_markets.Count > 0)
+                {
+                    TypeField markets = _markets.Where(s => s.code == intValue).FirstOrDefault();
+                    value = (markets != null) ? markets.description : value;
+                }
+            }
+            catch
+            {
+                //
+            }
+            return value;
+        }
+
+        private async Task<string> getTypes(string value, string schema)
+        {
+            try
+            {
+                int intValue = Int32.Parse(value);
+                ReferenceDataTypes _type = await getReferenceDataTypes(schema);
+                if (_type.Count > 0)
+                {
+                    ReferenceDataType types = _type.Where(s => s.id == value).FirstOrDefault();
+                    value = (types != null) ? types.type : value;
+                }
+            }
+            catch
+            {
+                //
+            }
+            return value;
         }
 
         #region Schemas
@@ -56,15 +124,15 @@ namespace ESCO.Reference.Data.Services
         /// <param></param>
         /// <returns>Schema object result</returns>
         public async Task<Schema> getSchema()
-        {            
+        {
             try
             {
-                return await _httpClient.getSchema();               
+                return await _httpClient.getSchema();
             }
             catch (Exception e)
-            {                
+            {
                 throw e;
-            }            
+            }
         }
 
         /// <summary>
@@ -81,7 +149,7 @@ namespace ESCO.Reference.Data.Services
             catch (Exception e)
             {
                 throw e;
-            }           
+            }
         }
 
         /// <summary>
@@ -90,21 +158,21 @@ namespace ESCO.Reference.Data.Services
         /// <param name="id">(Optional) Id del esquema. Si es null devuelve el esquema activo</param>
         /// <returns>Schema object Result.</returns>
         public async Task<Schema> getSchemaId(string id = null)
-        {            
+        {
             try
             {
                 if (id == null)
                 {
                     Schema schema = await _httpClient.getSchema();
-                    id = (schema != null)? schema.id: "0";
+                    id = (schema != null) ? schema.id : "0";
                 }
 
-                return await _httpClient.getSchemaId(id);                
+                return await _httpClient.getSchemaId(id);
             }
             catch (Exception e)
-            {                
+            {
                 throw e;
-            }            
+            }
         }
 
         /// <summary>
@@ -113,15 +181,15 @@ namespace ESCO.Reference.Data.Services
         /// <param></param>
         /// <returns>PromoteSchema object Result.</returns>
         public async Task<PromoteSchema> getPromoteSchema()
-        {            
+        {
             try
             {
-                return await _httpClient.getPromoteSchema();                
+                return await _httpClient.getPromoteSchema();
             }
             catch (Exception e)
-            {                
+            {
                 throw e;
-            }            
+            }
         }
 
         #endregion       
@@ -133,16 +201,16 @@ namespace ESCO.Reference.Data.Services
         /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
         /// <returns>FieldsList object Result.</returns>
         public async Task<FieldsList> getFields(string schema = null)
-        {            
+        {
             try
             {
-                schema = (schema == null)? await getSchemaActive(): schema;
-                return await _httpClient.getFields(schema);             
+                schema = (schema == null) ? await getSchemaActive() : schema;
+                return await _httpClient.getFields(schema);
             }
             catch (Exception e)
-            {           
+            {
                 throw e;
-            }            
+            }
         }
 
         /// <summary>
@@ -152,16 +220,16 @@ namespace ESCO.Reference.Data.Services
         /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
         /// <returns>Field object Result.</returns>
         public async Task<Field> getField(string id, string schema = null)
-        {            
+        {
             try
             {
-                schema = (schema == null)? await getSchemaActive(): schema;
-                return await _httpClient.getField(id, schema);                
+                schema = (schema == null) ? await getSchemaActive() : schema;
+                return await _httpClient.getField(id, schema);
             }
             catch (Exception e)
-            {                
+            {
                 throw e;
-            }            
+            }
         }
         #endregion
 
@@ -173,34 +241,34 @@ namespace ESCO.Reference.Data.Services
         /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
         /// <returns>SuggestedFields object Result.</returns>
         public async Task<SuggestedFields> getInstrumentsSuggestedFields(string schema = null)
-        {            
+        {
             try
             {
-                schema = (schema == null)? await getSchemaActive(): schema;
-                return await _httpClient.getInstrumentsSuggestedFields(schema);                
+                schema = schema ?? await getSchemaActive();
+                return await _httpClient.getInstrumentsSuggestedFields(schema);
             }
             catch (Exception e)
-            {               
+            {
                 throw e;
-            }            
+            }
         }
 
         /// <summary>
         /// Retorna la lista de instrumentos actualizados en el día.
         /// </summary>
-        /// <param name="type">(Optional) Filtrar por tipo de Instrumentos. Si es null devuelve la lista completa.</param>
+        /// <param name="type">(Optional) Filtrar por Id del tipo de Instrumentos. Si es null devuelve la lista completa.</param>
         /// <param name="source">(Optional) Filtrar por mercado (source). Valores permitidos: "ROFEX", "CAFCI", "BYMA". Si es null devuelve la lista completa.</param>
         /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
         /// <returns>Instruments object Result.</returns>
-        public async Task<Instruments> getInstrumentsTodayUpdated(string type = null, string source = null, string schema = null)
-        {            
+        public async Task<Instruments> getInstrumentsTodayUpdated(string type = null, string source = null, string schema = null) 
+        {
             return await _httpGetInstruments(Config.InstrumentsTodayUpdated, type, source, schema);
         }
 
         /// <summary>
         /// Retorna los instrumentos actualizados en el día que contengan una cadena de búsqueda como parte del id.
         /// </summary>
-        /// <param name="id">(Requeried) Cadena de búsqueda de los Instrumentos actualizados en el día a filtrar.</param>
+        /// <param name="id">(Requeried) Cadena de búsqueda del Id de los Instrumentos actualizados en el día a filtrar.</param>
         /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
         /// <returns>Instruments object Result.</returns>
         public async Task<Instruments> searchInstrumentsTodayUpdated(string id, string schema = null)
@@ -211,19 +279,19 @@ namespace ESCO.Reference.Data.Services
         /// <summary>
         /// Retorna la lista de instrumentos dados de alta en el día.
         /// </summary>
-        /// <param name="type">(Optional) Filtrar por tipo de Instrumentos. Si es null devuelve la lista completa.</param>
+        /// <param name="type">(Optional) Filtrar por Id del tipo de Instrumentos. Si es null devuelve la lista completa.</param>
         /// <param name="source">(Optional) Filtrar por mercado (source). Valores permitidos: "ROFEX", "CAFCI", "BYMA". Si es null devuelve la lista completa.</param>
         /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
         /// <returns>Instruments object Result.</returns>
         public async Task<Instruments> getInstrumentsTodayAdded(string type = null, string source = null, string schema = null)
-        {            
+        {
             return await _httpGetInstruments(Config.InstrumentsTodayAdded, type, source, schema);
         }
 
         /// <summary>
         /// Retorna los instrumentos dados de alta en el día que contengan una cadena de búsqueda como parte del id.
         /// </summary>
-        /// <param name="id">(Requeried) Cadena de búsqueda de los Instrumentos dados de alta en el día a filtrar.</param>
+        /// <param name="id">(Requeried) Cadena de búsqueda del Id de los Instrumentos dados de alta en el día a filtrar.</param>
         /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
         /// <returns>Instruments object Result.</returns>
         public async Task<Instruments> searchInstrumentsTodayAdded(string id, string schema = null)
@@ -234,19 +302,19 @@ namespace ESCO.Reference.Data.Services
         /// <summary>
         /// Retorna la lista de instrumentos dados de baja en el día.
         /// </summary>
-        /// <param name="type">(Optional) Filtrar por tipo de Instrumentos. Si es null devuelve la lista completa.</param>
+        /// <param name="type">(Optional) Filtrar por Id del tipo de Instrumentos. Si es null devuelve la lista completa.</param>
         /// <param name="source">(Optional) Filtrar por mercado (source). Valores permitidos: "ROFEX", "CAFCI", "BYMA". Si es null devuelve la lista completa.</param>
         /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
         /// <returns>Instruments object Result.</returns>
         public async Task<Instruments> getInstrumentsTodayRemoved(string type = null, string source = null, string schema = null)
-        {            
+        {
             return await _httpGetInstruments(Config.InstrumentsTodayRemoved, type, source, schema);
         }
 
         /// <summary>
         /// Retorna los instrumentos dados de baja en el día que contengan una cadena de búsqueda como parte del id.
         /// </summary>
-        /// <param name="id">(Requeried) Cadena de búsqueda de los Instrumentos dados de baja en el día a filtrar.</param>
+        /// <param name="id">(Requeried) Cadena de búsqueda del Id de los Instrumentos dados de baja en el día a filtrar.</param>
         /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
         /// <returns>Instruments object Result.</returns>
         public async Task<Instruments> searchInstrumentsTodayRemoved(string id, string schema = null)
@@ -265,30 +333,31 @@ namespace ESCO.Reference.Data.Services
             Response result = new Response();
             try
             {
-                schema = (schema == null) ? await getSchemaActive() : schema;
-                return await _httpClient.getInstrumentsReport(source, schema);                
+                schema = schema ?? await getSchemaActive();
+                source = (source != null) ? await getSourceReport(source) : source;
+                return await _httpClient.getInstrumentsReport(source, schema);
             }
             catch (Exception e)
-            {                
+            {
                 throw e;
-            }            
+            }
         }
 
         /// <summary>
         /// Retorna los instrumentos del reporte resumido contengan una cadena de búsqueda como parte del id.
         /// </summary>
-        /// <param name="id">">(Requeried) Cadena de búsqueda de los Instrumentos del reporte resumido a filtrar</param>      
+        /// <param name="id">">(Requeried) Cadena de búsqueda del Id de los Instrumentos del reporte resumido a filtrar</param>      
         /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
         /// <returns>InstrumentsReport object Result.</returns>
         public async Task<InstrumentsReport> searchInstrumentsReport(string id, string schema = null)
-        {            
+        {
             try
             {
-               schema = (schema == null) ? await getSchemaActive() : schema;
-               return await _httpClient.searchInstrumentsReport(id, schema);                
+                schema = schema ?? await getSchemaActive();
+                return await _httpClient.searchInstrumentsReport(id, schema);
             }
             catch (Exception e)
-            {                
+            {
                 throw e;
             }
         }
@@ -303,19 +372,19 @@ namespace ESCO.Reference.Data.Services
         {
             try
             {
-                schema = (schema == null)? await getSchemaActive(): schema;
-                return await _httpClient.getInstrument(id, schema);                
+                schema = schema ?? await getSchemaActive();
+                return await _httpClient.getInstrument(id, schema);
             }
             catch (Exception e)
-            {                
+            {
                 throw e;
-            }            
+            }
         }
 
         /// <summary>
         /// Retorna los instrumentos que contengan una cadena de búsqueda como parte del id.
         /// </summary>
-        /// <param name="id">(Requeried) Cadena de búsqueda de los Instrumentos a filtrar.</param>
+        /// <param name="id">(Requeried) Cadena de búsqueda del Id de los Instrumentos a filtrar.</param>
         /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
         /// <returns>Instruments object Result.</returns>
         public async Task<Instruments> searchInstruments(string id, string schema = null)
@@ -326,7 +395,7 @@ namespace ESCO.Reference.Data.Services
         /// <summary>
         /// Retorna una lista de instrumentos.
         /// </summary>
-        /// <param name="type">(Optional) Filtrar por tipo de Instrumentos. Si es null devuelve todos los tipos de Instrumentos.</param>
+        /// <param name="type">(Optional) Filtrar por Id del tipo de Instrumentos. Si es null devuelve todos los tipos de Instrumentos.</param>
         /// <param name="source">(Optional) Filtrar por mercado (source). Valores permitidos: "ROFEX", "CAFCI", "BYMA". Si es null devuelve la lista completa.</param>
         /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
         /// <returns>Instruments object Result.</returns>
@@ -336,30 +405,31 @@ namespace ESCO.Reference.Data.Services
         }
 
         private async Task<Instruments> _httpGetInstruments(string cfg, string type, string source, string schema)
-        {            
+        {
             try
             {
-                schema = (schema == null) ? await getSchemaActive() : schema; 
-                source = (source != null) ? await getTypes(source) : source;
-                return await _httpClient.getInstruments(cfg, type, source, schema);                
+                schema = schema ?? await getSchemaActive();
+                type = (type != null) ? await getSourceType(type, true) : type;
+                source = (source != null) ? await getSourceType(source, false) : source;
+                return await _httpClient.getInstruments(cfg, type, source, schema);
             }
             catch (Exception e)
-            {               
+            {
                 throw e;
-            }            
+            }
         }
 
         private async Task<Instruments> _httpSearchInstruments(string cfg, string id, string schema)
-        {            
+        {
             try
             {
-                schema = (schema == null) ? await getSchemaActive() : schema;
-                return await _httpClient.searchInstruments(cfg, id, schema);                
+                schema = schema ?? await getSchemaActive();
+                return await _httpClient.searchInstruments(cfg, id, schema);
             }
             catch (Exception e)
-            {                
+            {
                 throw e;
-            }            
+            }
         }
 
         #endregion
@@ -369,18 +439,18 @@ namespace ESCO.Reference.Data.Services
         /// <summary>
         /// Retorna la lista de instrumentos actualizados en el día.
         /// </summary>
-        /// <param name="type">(Optional) Filtrar por tipo de Instrumentos. Si es null devuelve la lista completa.</param>
+        /// <param name="type">(Optional) Filtrar por Id del tipo de Instrumentos. Si es null devuelve la lista completa.</param>
         /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
         /// <returns>ReferenceDatas object Result.</returns>
         public async Task<ReferenceDatas> getReferenceDataTodayUpdated(string type = null, string schema = null)
-        {            
+        {
             return await _httpReferenceDatas(Config.TodayUpdated, type, schema, false);
         }
 
         /// <summary>
         /// Retorna la lista de instrumentos actualizados en el día que contengan una cadena de búsqueda como parte del id.
         /// </summary>
-        /// <param name="id">(Requeried) Cadena de búsqueda de los Instrumentos actualizados en el día a filtrar.</param>
+        /// <param name="id">(Requeried) Cadena de búsqueda del Id de los Instrumentos actualizados en el día a filtrar.</param>
         /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
         /// <returns>ReferenceDatas object Result.</returns>
         public async Task<ReferenceDatas> searchReferenceDataTodayUpdated(string id, string schema = null)
@@ -391,18 +461,18 @@ namespace ESCO.Reference.Data.Services
         /// <summary>
         /// Retorna la lista de instrumentos dados de alta en el día.
         /// </summary>
-        /// <param name="type">(Optional) Filtrar por tipo de Instrumentos. Si es null devuelve la lista completa.</param>
+        /// <param name="type">(Optional) Filtrar por Id del tipo de Instrumentos. Si es null devuelve la lista completa.</param>
         /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
         /// <returns>ReferenceDatas object Result.</returns>
         public async Task<ReferenceDatas> getReferenceDataTodayAdded(string type = null, string schema = null)
-        {            
+        {
             return await _httpReferenceDatas(Config.TodayAdded, type, schema, false);
         }
 
         /// <summary>
         /// Retorna la lista de instrumentos dados de alta en el día que contengan una cadena de búsqueda como parte del id.
         /// </summary>
-        /// <param name="id">(Requeried) Cadena de búsqueda de los Instrumentos dados de alta en el día a filtrar.</param>
+        /// <param name="id">(Requeried) Cadena de búsqueda del Id de los Instrumentos dados de alta en el día a filtrar.</param>
         /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
         /// <returns>ReferenceDatas object Result.</returns>
         public async Task<ReferenceDatas> searchReferenceDataTodayAdded(string id, string schema = null)
@@ -413,7 +483,7 @@ namespace ESCO.Reference.Data.Services
         /// <summary>
         /// Retorna la lista de instrumentos dados de baja en el día.
         /// </summary>
-        /// <param name="type">(Optional) Filtrar por tipo de Instrumentos. Si es null devuelve la lista completa.</param>
+        /// <param name="type">(Optional) Filtrar por Id del tipo de Instrumentos. Si es null devuelve la lista completa.</param>
         /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
         /// <returns>ReferenceDatas object Result.</returns>
         public async Task<ReferenceDatas> getReferenceDataTodayRemoved(string type = null, string schema = null)
@@ -424,7 +494,7 @@ namespace ESCO.Reference.Data.Services
         /// <summary>
         /// Retorna la lista de instrumentos dados de baja en el día que contengan una cadena de búsqueda como parte del id.
         /// </summary>
-        /// <param name="id">(Requeried) Cadena de búsqueda de los Instrumentos dados de baja en el día a filtrar.</param>
+        /// <param name="id">(Requeried) Cadena de búsqueda del Id de los Instrumentos dados de baja en el día a filtrar.</param>
         /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
         /// <returns>ReferenceDatas object Result.</returns>
         public async Task<ReferenceDatas> searchReferenceDataTodayRemoved(string id, string schema = null)
@@ -435,22 +505,22 @@ namespace ESCO.Reference.Data.Services
         /// <summary>
         /// Retorna la lista de instrumentos financieros.
         /// </summary>
-        /// <param name="type">(Optional) Filtrar por tipo de Instrumentos. Si es null devuelve la lista completa.</param>
+        /// <param name="type">(Optional) Filtrar por Id del tipo de Instrumentos. Si es null devuelve la lista completa.</param>
         /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>        
         /// <returns>ReferenceDatas object Result.</returns>
         public async Task<ReferenceDatas> getReferenceDatas(string type = null, string schema = null)
-        {            
+        {
             return await _httpReferenceDatas(Config.ReferenceDatas, type, schema, false);
         }
 
         /// <summary>
         /// Retorna los Instrumentos financieros que contengan una cadena de búsqueda como parte del id.
         /// </summary>
-        /// <param name="id">(Requeried) Cadena de búsqueda de los Instrumentos financieros a filtrar.</param>
+        /// <param name="id">(Requeried) Cadena de búsqueda del Id de los Instrumentos financieros a filtrar.</param>
         /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>        
         /// <returns>ReferenceDatas object Result.</returns>
         public async Task<ReferenceDatas> searchReferenceDatas(string id, string schema = null)
-        {           
+        {
             return await _httpReferenceDatas(Config.ReferenceDatas, id, schema, true);
         }
 
@@ -458,7 +528,8 @@ namespace ESCO.Reference.Data.Services
         {
             try
             {
-                schema = (schema == null) ? await getSchemaActive() : schema;
+                schema = schema ?? await getSchemaActive();
+                str = (!search) ? await getTypes(str, schema) : str;
                 return (search) ?
                     await _httpClient.searchReferenceDatas(cfg, str, schema) :
                     await _httpClient.getReferenceDatas(cfg, str, schema);
@@ -475,16 +546,16 @@ namespace ESCO.Reference.Data.Services
         /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
         /// <returns>Specification object Result.</returns>
         public async Task<Specification> getReferenceDataSpecification(string schema = null)
-        {            
+        {
             try
             {
-                schema = (schema == null)? await getSchemaActive(): schema;
-                return await _httpClient.getSpecification(schema);               
+                schema = schema ?? await getSchemaActive();
+                return await _httpClient.getSpecification(schema);
             }
             catch (Exception e)
-            {                
+            {
                 throw e;
-            }            
+            }
         }
 
         #endregion
@@ -499,13 +570,13 @@ namespace ESCO.Reference.Data.Services
         {
             try
             {
-                schema = (schema == null)? await getSchemaActive(): schema;
-                return await _httpClient.getReports(schema);                
+                schema = schema ?? await getSchemaActive();
+                return await _httpClient.getReports(schema);
             }
             catch (Exception e)
-            {                
+            {
                 throw e;
-            }            
+            }
         }
 
         /// <summary>
@@ -518,13 +589,13 @@ namespace ESCO.Reference.Data.Services
         {
             try
             {
-                schema = (schema == null) ? await getSchemaActive() : schema;
-                return await _httpClient.getReport(id,schema);                
+                schema = schema ?? await getSchemaActive();
+                return await _httpClient.getReport(id, schema);
             }
             catch (Exception e)
-            {                
+            {
                 throw e;
-            }            
+            }
         }
         #endregion
 
@@ -535,15 +606,15 @@ namespace ESCO.Reference.Data.Services
         /// </summary>
         /// <returns>Types object Result.</returns>
         public async Task<Types> getSourceFieldTypes()
-        {            
+        {
             try
             {
-                return await _httpClient.getSourceFieldTypes();                
+                return await _httpClient.getSourceFieldTypes();
             }
             catch (Exception e)
-            {                
+            {
                 throw e;
-            }            
+            }
         }
 
         /// <summary>
@@ -551,15 +622,15 @@ namespace ESCO.Reference.Data.Services
         /// </summary>       
         /// <returns>Types object Result.</returns>
         public async Task<Types> getPropertyControlTypes()
-        {            
+        {
             try
             {
-                return await _httpClient.getPropertyControlTypes();                
+                return await _httpClient.getPropertyControlTypes();
             }
             catch (Exception e)
-            {                
+            {
                 throw e;
-            }            
+            }
         }
 
         /// <summary>
@@ -567,15 +638,15 @@ namespace ESCO.Reference.Data.Services
         /// </summary>       
         /// <returns>Types object Result.</returns>
         public async Task<Types> getStateControlTypes()
-        {            
+        {
             try
             {
-               return await _httpClient.getStateControlTypes();                
+                return await _httpClient.getStateControlTypes();
             }
             catch (Exception e)
-            {                
+            {
                 throw e;
-            }            
+            }
         }
 
         /// <summary>
@@ -583,15 +654,15 @@ namespace ESCO.Reference.Data.Services
         /// </summary>       
         /// <returns>Types object Result.</returns>
         public async Task<Types> getInstrumentTypes()
-        {            
+        {
             try
             {
-               return await _httpClient.getInstrumentTypes();                
+                return await _httpClient.getInstrumentTypes();
             }
             catch (Exception e)
-            {                
+            {
                 throw e;
-            }            
+            }
         }
 
         /// <summary>
@@ -599,15 +670,15 @@ namespace ESCO.Reference.Data.Services
         /// </summary>       
         /// <returns>object Result.</returns>
         public async Task<Types> getPropertyOriginTypes()
-        {            
+        {
             try
             {
-                return await _httpClient.getPropertyOriginTypes();              
+                return await _httpClient.getPropertyOriginTypes();
             }
             catch (Exception e)
-            {                
+            {
                 throw e;
-            }            
+            }
         }
 
         /// <summary>
@@ -615,15 +686,15 @@ namespace ESCO.Reference.Data.Services
         /// </summary>       
         /// <returns>Types object Result.</returns>
         public async Task<Types> getSourceTypes()
-        {            
+        {
             try
             {
-                return await _httpClient.getSourceTypes();         
+                return await _httpClient.getSourceTypes();
             }
             catch (Exception e)
-            {                
+            {
                 throw e;
-            }            
+            }
         }
 
         #endregion
@@ -636,16 +707,16 @@ namespace ESCO.Reference.Data.Services
         /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
         /// <returns>Mapping object Result.</returns>
         public async Task<Mapping> getMapping(string id = null, string schema = null)
-        {            
+        {
             try
             {
-                schema = (schema == null)? await getSchemaActive(): schema;
-                return await _httpClient.getMapping(id, schema);                
+                schema = schema ?? await getSchemaActive();
+                return await _httpClient.getMapping(id, schema);
             }
             catch (Exception e)
-            {                
+            {
                 throw e;
-            }            
+            }
         }
 
         /// <summary>
@@ -657,13 +728,13 @@ namespace ESCO.Reference.Data.Services
         {
             try
             {
-                schema = (schema == null)? await getSchemaActive(): schema;
-                return await _httpClient.getMappings(schema);                
+                schema = schema ?? await getSchemaActive();
+                return await _httpClient.getMappings(schema);
             }
             catch (Exception e)
-            {                
+            {
                 throw e;
-            }            
+            }
         }
 
         #endregion
@@ -675,16 +746,16 @@ namespace ESCO.Reference.Data.Services
         /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
         /// <returns>SourceFields object Result.</returns>
         public async Task<SourceFields> getSourceFields(string schema = null)
-        {            
+        {
             try
             {
-                schema = (schema == null)? await getSchemaActive(): schema;
-                return await _httpClient.getSourceFields(schema);                
+                schema = schema ?? await getSchemaActive();
+                return await _httpClient.getSourceFields(schema);
             }
             catch (Exception e)
-            {                
+            {
                 throw e;
-            }            
+            }
         }
 
         /// <summary>
@@ -693,17 +764,17 @@ namespace ESCO.Reference.Data.Services
         /// <param name="id">(Requeried) Id del Source Field a filtrar.</param>
         /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
         /// <returns>SourceField object Result.</returns>
-        public async Task<SourceField> getSourceField(string id = null, string schema = null)
-        {            
+        public async Task<SourceField> getSourceField(string id, string schema = null)
+        {
             try
             {
-                schema = (schema == null)? await getSchemaActive(): schema;
-                return await _httpClient.getSourceField(id, schema);                
+                schema = schema ?? await getSchemaActive();
+                return await _httpClient.getSourceField(id, schema);
             }
             catch (Exception e)
-            {                
+            {
                 throw e;
-            }            
+            }
         }
         #endregion
 
@@ -713,10 +784,10 @@ namespace ESCO.Reference.Data.Services
         /// </summary>
         /// <returns>Status object Result.</returns>
         public async Task<Status> getStatusProcesses()
-        {            
+        {
             try
             {
-                return await _httpClient.getStatusProcesses();                
+                return await _httpClient.getStatusProcesses();
             }
             catch (Exception e)
             {
@@ -733,27 +804,93 @@ namespace ESCO.Reference.Data.Services
         /// <param name="underlyingSymbol">(Optional) Símbolo del Derivado (Ej: "Indice Novillo Pesos", puede incluirse una cadena de búsqueda parcial).</param>
         /// <returns>Derivatives object Result.</returns>
         public async Task<Derivatives> getDerivatives(string marketSegmentId = null, string underlyingSymbol = null)
-        {           
+        {
             try
             {
-                return await _httpClient.getDerivatives(marketSegmentId, underlyingSymbol);                
+                return await _httpClient.getDerivatives(marketSegmentId, underlyingSymbol);
             }
             catch (Exception e)
-            {                
+            {
                 throw e;
-            }            
+            }
         }
 
         /// <summary>
         /// Retorna una lista de derivados que contengan una cadena de búsqueda como parte del id.
         /// </summary>
-        /// <param name="id">(Requeried) Cadena de búsqueda de los Derivadis a filtrar.</param>        
+        /// <param name="id">(Requeried) Cadena de búsqueda del Id de los Derivados a filtrar.</param>        
         /// <returns>Instruments object Result.</returns>
         public async Task<Derivatives> searchDerivatives(string id)
         {
             try
             {
                 return await _httpClient.searchDerivatives(id);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        /// <summary>
+        /// Retorna una lista de Segmentos de mercado de derivados (MarketSegmentId).
+        /// </summary>       
+        /// <returns>MarketSegments object Result.</returns>
+        public async Task<MarketSegments> getMarketSegments()
+        {
+            try
+            {
+                MarketSegments markets = new MarketSegments();
+                Derivatives rest = await _httpClient.getDerivatives(null, null);
+                if (rest != null && rest.Count > 0)
+                {
+                    DerivativesList restMarkets = new DerivativesList();
+                    restMarkets.value = rest
+                        .GroupBy(x => x.marketSegmentId)
+                        .Select(x => x.First())
+                        .OrderBy(x => x.marketSegmentId)
+                        .ToList();
+                    for (int i = 0; i < restMarkets.value.Count; i++)
+                    {
+                        MarketSegment market = new MarketSegment();
+                        market.marketSegmentId = restMarkets.value[i].marketSegmentId;
+                        markets.Add(market);
+                    }
+                }
+                return markets;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        /// <summary>
+        /// Retorna una lista de Símbolos de derivados (underlyingSymbol).
+        /// </summary>       
+        /// <returns>MarketSegments object Result.</returns>
+        public async Task<UnderlyingSymbols> getUnderlyingSymbols()
+        {
+            try
+            {
+                UnderlyingSymbols symbols = new UnderlyingSymbols();
+                Derivatives rest = await _httpClient.getDerivatives(null, null);
+                if (rest != null && rest.Count > 0)
+                {
+                    DerivativesList restMarkets = new DerivativesList();
+                    restMarkets.value = rest
+                        .GroupBy(x => x.underlyingSymbol)
+                        .Select(x => x.First())
+                        .OrderBy(x => x.underlyingSymbol)
+                        .ToList();
+                    for (int i = 0; i < restMarkets.value.Count; i++)
+                    {
+                        UnderlyingSymbol symbol = new UnderlyingSymbol();
+                        symbol.underlyingSymbol = restMarkets.value[i].underlyingSymbol;
+                        symbols.Add(symbol);
+                    }
+                }
+                return symbols;
             }
             catch (Exception e)
             {
@@ -769,45 +906,45 @@ namespace ESCO.Reference.Data.Services
         /// <param name="id">(Requeried) Id del Fondo a filtrar.</param>
         /// <returns>Fund object Result.</returns>
         public async Task<Fund> getFund(string id)
-        {            
+        {
             try
             {
-                return await _httpClient.getFund(id);                
+                return await _httpClient.getFund(id);
             }
             catch (Exception e)
-            {                
+            {
                 throw e;
-            }            
+            }
         }
 
         /// <summary>
         /// Retorna una lista de fondos filtrado por campos específicos
         /// </summary>
-        /// <param name="managment">(Optional) Filtar por Sociedad Administración (puede incluirse una cadena de búsqueda parcial)</param>
-        /// <param name="depositary">(Optional) Filtar por Sociedad Depositoria (puede incluirse una cadena de búsqueda parcial)</param>
+        /// <param name="managment">(Optional) Filtar por Id de la Sociedad de Administración</param>
+        /// <param name="depositary">(Optional) Filtar por Id de la Sociedad Depositaria</param>
         /// <param name="currency">(Optional) Filtar por Moneda (Ejemplo: "ARS", "USD")</param>
-        /// <param name="rentType">(Optional) Filtar por Tipo de Renta (puede incluirse una cadena de búsqueda parcial)</param>
+        /// <param name="rentType">(Optional) Filtar por Id del Tipo de Renta</param>
         /// <returns>Funds object Result.</returns>
         public async Task<Funds> getFunds(
-            string managment = null, 
-            string depositary = null, 
-            string currency = null, 
+            string managment = null,
+            string depositary = null,
+            string currency = null,
             string rentType = null)
-        {            
+        {
             try
             {
-                return await _httpClient.getFunds(managment, depositary, currency, rentType);                
+                return await _httpClient.getFunds(managment, depositary, currency, rentType);
             }
             catch (Exception e)
-            {                
+            {
                 throw e;
-            }            
+            }
         }
 
         /// <summary>
         /// Retorna una lista de fondos que contengan una cadena de búsqueda como parte del id.
         /// </summary>
-        /// <param name="id">(Requeried) Cadena de búsqueda de los Fondos a filtrar. Si es null devuelve todos los Fondos</param>
+        /// <param name="id">(Requeried) Cadena de búsqueda del Id de los Fondos a filtrar. Si es null devuelve todos los Fondos</param>
         /// <returns>Funds object Result.</returns>
         public async Task<Funds> searchFunds(string id)
         {
@@ -829,32 +966,32 @@ namespace ESCO.Reference.Data.Services
         /// <param name="id">(Requeried) Id del título valor a filtrar.</param>
         /// <returns>Securitie object Result.</returns>
         public async Task<Securitie> getSecuritie(string id)
-        {            
+        {
             try
             {
-                return await _httpClient.getSecuritie(id);         
+                return await _httpClient.getSecuritie(id);
             }
             catch (Exception e)
-            {                
+            {
                 throw e;
-            }            
+            }
         }
 
         /// <summary>
         /// Retorna una lista de títulos valores
         /// </summary>
-        /// <param name="id">(Optional) Cadena de búsqueda de los títulos valores a filtrar. Si es null devuelve todos los títulos valores</param>
+        /// <param name="id">(Optional) Cadena de búsqueda de del Id de los títulos valores a filtrar. Si es null devuelve todos los títulos valores</param>
         /// <returns>Securities object Result.</returns>
         public async Task<Securities> getSecurities(string id = null)
-        {            
+        {
             try
             {
-                return await _httpClient.getSecurities(id);                
+                return await _httpClient.getSecurities(id);
             }
             catch (Exception e)
-            {                
+            {
                 throw e;
-            }            
+            }
         }
         #endregion
 
@@ -870,14 +1007,16 @@ namespace ESCO.Reference.Data.Services
         {
             try
             {
-                schema = (schema == null) ? "2" : schema;
-                query = (query != null) ? query : String.Empty;
-                return await _httpClient.getODataReferenceDatas(query, schema);
+                schema = schema ?? "2";
+                query = query ?? String.Empty;
+                ODataList list = await _httpClient.getODataReferenceDatas(query, schema);
+
+                return (list != null) ? list.value : new ODataObject();
             }
             catch (Exception e)
             {
                 throw e;
-            }
+            }            
         }
 
         /// <summary>
@@ -890,8 +1029,10 @@ namespace ESCO.Reference.Data.Services
         {
             try
             {
-                schema = (schema == null) ? "2" : schema;                
-                return await _httpClient.getODataReferenceDatasById(id, schema);
+                schema = schema ?? "2";
+                ODataList list = await _httpClient.getODataReferenceDatasById(id, schema);
+
+                return (list != null) ? list.value : new ODataObject();
             }
             catch (Exception e)
             {
@@ -902,31 +1043,36 @@ namespace ESCO.Reference.Data.Services
         /// <summary>
         /// Retorna la lista de instrumentos financieros filtrados por campos específicos (puede incluirse cadenas de búsqueda parcial).
         /// </summary>
-        /// <param name="type">(Optional) Filtrar por tipo de Instrumentos.</param>
-        /// <param name="currency">(Optional) Filtrar por tipo de Moneda.</param>
-        /// <param name="symbol">(Optional) Filtrar por símbolo de Instrumentos.</param>        
-        /// <param name="market">(Optional) Filtrar por Tipo de Mercado.</param>
-        /// <param name="country">(Optional) Filtrar por País.</param>
+        /// <param name="type">(Optional) Filtrar por tipo de Instrumentos financiero (Ej: "MF","FUT", "OPC", puede incluirse una cadena de búsqueda parcial.</param>
+        /// <param name="currency">(Optional) Filtrar por tipo de Moneda. (Ej: "ARS", puede incluirse una cadena de búsqueda parcial)</param>
+        /// <param name="symbol">(Optional) Filtrar por símbolo de Instrumentos (Ej: "AULA", puede incluirse una cadena de búsqueda parcial).</param>        
+        /// <param name="market">(Optional) Filtrar por Tipo de Mercado. (Ej "ROFX", "BYMA", puede incluirse una cadena de búsqueda parcial)</param>       
+        /// <param name="country">(Optional) Filtrar por nombre de País (Ej: "ARG", puede incluirse una cadena de búsqueda parcial).</param>
         /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema "2".</param>
         /// <returns>ReferenceDatas object Result.</returns>
         public async Task<ODataObject> searchODataReferenceDatas(
-            string type = null, 
-            string currency = null, 
-            string symbol = null, 
-            string market = null, 
-            string country = null, 
+            string type = null,
+            string currency = null,
+            string symbol = null,
+            string market = null,
+            string country = null,
             string schema = null)
         {
             try
             {
-                schema = (schema == null) ? "2" : schema;
-                return await _httpClient.searchODataReferenceDatas(
-                    type, 
-                    currency, 
-                    symbol, 
-                    market, 
-                    country, 
+                schema = schema ?? "2";
+                type = await getTypes(type, schema);
+                market = await getMarketsTypes(market);
+
+                ODataList list = await _httpClient.searchODataReferenceDatas(
+                    type,
+                    currency,
+                    symbol,
+                    market,
+                    country,
                     schema);
+
+                return (list != null) ? list.value : new ODataObject();
             }
             catch (Exception e)
             {
@@ -947,18 +1093,19 @@ namespace ESCO.Reference.Data.Services
         {
             try
             {
-                schema = (schema == null) ? "2" : schema;
-                Custodians despositarys = new Custodians();
-                Custodians rest = await _httpClient.getCustodians(schema);
+                schema = schema ?? "2";
+                Custodians custodians = new Custodians();
+                CustodiansList rest = await _httpClient.getCustodians(schema);
                 if (rest != null && rest.value.Count > 0)
                 {
-                    despositarys.value = rest.value
+                    rest.value
                         .GroupBy(x => x.FundCustodianId)
                         .Select(x => x.First())
                         .OrderBy(x => Int32.Parse(x.FundCustodianId))
-                        .ToList();
+                        .ToList<Custodian>()
+                        .ForEach(x => custodians.Add(x));
                 }
-                return despositarys;
+                return custodians;
             }
             catch (Exception e)
             {
@@ -975,16 +1122,17 @@ namespace ESCO.Reference.Data.Services
         {
             try
             {
-                schema = (schema == null) ? "2" : schema;
+                schema = schema ?? "2";
                 Managments managments = new Managments();
-                Managments rest = await _httpClient.getManagements(schema);
+                ManagmentsList rest = await _httpClient.getManagements(schema);
                 if (rest != null && rest.value.Count > 0)
                 {
-                    managments.value = rest.value
+                    rest.value
                         .GroupBy(x => x.FundManagerId)
                         .Select(x => x.First())
                         .OrderBy(x => Int32.Parse(x.FundManagerId))
-                        .ToList();
+                        .ToList()
+                        .ForEach(x => managments.Add(x));
                 }
                 return managments;
             }
@@ -999,22 +1147,23 @@ namespace ESCO.Reference.Data.Services
         /// </summary>
         /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
         /// <returns>Rents object Result.</returns>
-        public async Task<Rents> getRentType(string schema = null)
+        public async Task<Rents> getRentTypes(string schema = null)
         {
             try
             {
-                schema = (schema == null) ? "2" : schema;
-                Rents managments = new Rents();
-                Rents rest = await _httpClient.getRentType(schema);
+                schema = schema ?? "2";
+                Rents rents = new Rents();
+                RentsList rest = await _httpClient.getRentTypes(schema);
                 if (rest != null && rest.value.Count > 0)
                 {
-                    managments.value = rest.value
+                    rest.value
                         .GroupBy(x => x.RentTypeId)
                         .Select(x => x.First())
                         .OrderBy(x => Int32.Parse(x.RentTypeId))
-                        .ToList();
+                        .ToList()
+                        .ForEach(x => rents.Add(x));
                 }
-                return managments;
+                return rents;
             }
             catch (Exception e)
             {
@@ -1031,16 +1180,17 @@ namespace ESCO.Reference.Data.Services
         {
             try
             {
-                schema = (schema == null) ? "2" : schema;
+                schema = schema ?? "2";
                 Regions regions = new Regions();
-                Regions rest = await _httpClient.getRegions(schema);
+                RegionsList rest = await _httpClient.getRegions(schema);
                 if (rest != null && rest.value.Count > 0)
                 {
-                    regions.value = rest.value
+                    rest.value
                         .GroupBy(x => x.RegionId)
                         .Select(x => x.First())
                         .OrderBy(x => Int32.Parse(x.RegionId))
-                        .ToList();
+                        .ToList()
+                        .ForEach(x => regions.Add(x));
                 }
                 return regions;
             }
@@ -1059,15 +1209,16 @@ namespace ESCO.Reference.Data.Services
         {
             try
             {
-                schema = (schema == null) ? "2" : schema;
+                schema = schema ?? "2";
                 Currencys currencys = new Currencys();
-                Currencys rest = await _httpClient.getCurrencys(schema);
+                CurrencysList rest = await _httpClient.getCurrencys(schema);
                 if (rest != null && rest.value.Count > 0)
                 {
-                    currencys.value = rest.value
+                    rest.value
                         .GroupBy(x => x.Currency)
                         .Select(x => x.First())
-                        .ToList();
+                        .ToList()
+                        .ForEach(x => currencys.Add(x));
                 }
                 return currencys;
             }
@@ -1086,15 +1237,17 @@ namespace ESCO.Reference.Data.Services
         {
             try
             {
-                schema = (schema == null) ? "2" : schema;
+                schema = schema ?? "2";
                 Countrys countrys = new Countrys();
-                Countrys rest = await _httpClient.getCountrys(schema);
+                CountrysList rest = await _httpClient.getCountrys(schema);
                 if (rest != null && rest.value.Count > 0)
                 {
-                    countrys.value = rest.value
+                    rest.value
                         .GroupBy(x => x.Country)
                         .Select(x => x.First())
-                        .ToList();
+                        .OrderBy(x => x.Country)
+                        .ToList()
+                        .ForEach(x => countrys.Add(x));
                 }
                 return countrys;
             }
@@ -1113,15 +1266,17 @@ namespace ESCO.Reference.Data.Services
         {
             try
             {
-                schema = (schema == null) ? "2" : schema;
+                schema = schema ?? "2";
                 Issuers issuers = new Issuers();
-                Issuers rest = await _httpClient.getIssuers(schema);
+                IssuersList rest = await _httpClient.getIssuers(schema);
                 if (rest != null && rest.value.Count > 0)
                 {
-                    issuers.value = rest.value
+                    rest.value
                         .GroupBy(x => x.Issuer)
                         .Select(x => x.First())
-                        .ToList();
+                        .OrderBy(x => x.Issuer)
+                        .ToList()
+                        .ForEach(x => issuers.Add(x));
                 }
                 return issuers;
             }
@@ -1140,16 +1295,17 @@ namespace ESCO.Reference.Data.Services
         {
             try
             {
-                schema = (schema == null) ? "2" : schema;
+                schema = schema ?? "2";
                 Horizons horizons = new Horizons();
-                Horizons rest = await _httpClient.getHorizons(schema);
+                HorizonsList rest = await _httpClient.getHorizons(schema);
                 if (rest != null && rest.value.Count > 0)
                 {
-                    horizons.value = rest.value
+                    rest.value
                         .GroupBy(x => x.HorizonId)
                         .Select(x => x.First())
                         .OrderBy(x => Int32.Parse(x.HorizonId))
-                        .ToList();
+                        .ToList()
+                        .ForEach(x => horizons.Add(x));
                 }
                 return horizons;
             }
@@ -1168,16 +1324,17 @@ namespace ESCO.Reference.Data.Services
         {
             try
             {
-                schema = (schema == null) ? "2" : schema;
+                schema = schema ?? "2";
                 FundTypes types = new FundTypes();
-                FundTypes rest = await _httpClient.getFundTypes(schema);
+                FundTypesList rest = await _httpClient.getFundTypes(schema);
                 if (rest != null && rest.value.Count > 0)
                 {
-                    types.value = rest.value
+                    rest.value
                         .GroupBy(x => x.FundTypeId)
                         .Select(x => x.First())
                         .OrderBy(x => Int32.Parse(x.FundTypeId))
-                        .ToList();
+                        .ToList()
+                        .ForEach(x => types.Add(x));
                 }
                 return types;
             }
@@ -1196,18 +1353,119 @@ namespace ESCO.Reference.Data.Services
         {
             try
             {
-                schema = (schema == null) ? "2" : schema;
+                schema = schema ?? "2";
                 Benchmarks benchmarks = new Benchmarks();
-                Benchmarks rest = await _httpClient.getBenchmarks(schema);
+                BenchmarksList rest = await _httpClient.getBenchmarks(schema);
                 if (rest != null && rest.value.Count > 0)
                 {
-                    benchmarks.value = rest.value
+                    rest.value
                         .GroupBy(x => x.FundBenchmarkId)
                         .Select(x => x.First())
                         .OrderBy(x => Int32.Parse(x.FundBenchmarkId))
-                        .ToList();
+                        .ToList()
+                        .ForEach(x => benchmarks.Add(x));
                 }
                 return benchmarks;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        /// <summary>
+        /// Retorna la lista de Tipos de Instrumentos financieros
+        /// </summary>
+        /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
+        /// <returns>ReferenceDataTypes object Result.</returns>
+        public async Task<ReferenceDataTypes> getReferenceDataTypes(string schema = null)
+        {
+            try
+            {
+                schema = schema ?? "2";
+                
+                ReferenceDataTypes types = new ReferenceDataTypes();
+                ReferenceDataTypes list = new ReferenceDataTypes();
+                ReferenceDataTypesList rest = await _httpClient.getReferenceDataTypes(schema);
+
+                Types instr = await _httpClient.getInstrumentTypes();
+
+                if (rest != null && rest.value.Count > 0)
+                {
+                    rest.value
+                        .GroupBy(x => x.type)
+                        .Select(x => x.First())
+                        .ToList()
+                        .ForEach(x => list.Add(x));
+
+                    for (int i = 0; i < list.Count; i++)
+                    {
+                        TypeField id = instr.Find(x => x.description == list[i].type);
+                        list[i].id = (id != null) ? id.code.ToString() : String.Empty;
+                    }
+                    list.OrderBy(x => Int32.Parse(x.id)).ToList().ForEach(x => types.Add(x));
+                }
+                return types;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        /// <summary>
+        /// Retorna la lista de Símbolos (UnderlyingSymbol) de Instrumentos financieros
+        /// </summary>
+        /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
+        /// <returns>ReferenceDataTypes object Result.</returns>
+        public async Task<ReferenceDataSymbols> getReferenceDataSymbols(string schema = null)
+        {
+            try
+            {
+                schema = schema ?? "2";
+
+                ReferenceDataSymbols types = new ReferenceDataSymbols();
+                ReferenceDataSymbolsList rest = await _httpClient.getReferenceDataSymbols(schema);
+
+                if (rest != null && rest.value.Count > 0)
+                {
+                    rest.value
+                        .GroupBy(x => x.UnderlyingSymbol)
+                        .Select(x => x.First())
+                        .OrderBy(x => x.UnderlyingSymbol)
+                        .ToList()
+                        .ForEach(x => types.Add(x));
+                }
+                return types;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        /// <summary>
+        /// Retorna la lista de Mercados para los Instrumentos financieros
+        /// </summary>
+        /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
+        /// <returns>Markets object Result.</returns>
+        public async Task<Markets> getMarkets(string schema = null)
+        {
+            try
+            {
+                schema = schema ?? "2";
+                Markets markets = new Markets();
+                MarketsList rest = await _httpClient.getMarkets(schema);
+                if (rest != null && rest.value.Count > 0)
+                {
+                    rest.value
+                        .GroupBy(x => x.MarketId)
+                        .Select(x => x.First())
+                        .OrderBy(x => x.MarketId)
+                        .ToList()
+                        .ForEach(x => markets.Add(x));
+                }
+                return markets;
             }
             catch (Exception e)
             {

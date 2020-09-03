@@ -20,10 +20,12 @@ namespace ESCO.Reference.Data.Model
         public dynamic data { get; set; }
     }
 
-    public class ODataObject
+    public class ODataObject : List<dynamic> { }
+
+    public class ODataList
     {
         [JsonProperty("value")]
-        public List<dynamic> value { get; set; }
+        public ODataObject value { get; set; }
     }
 
     public class ODataReferenceDatas
@@ -117,5 +119,35 @@ namespace ESCO.Reference.Data.Model
 
         [JsonProperty("Country")]
         public string Country { get; set; }
+    }
+
+    public class ReferenceDataSymbols : List<ReferenceDataSymbol> { }
+
+    public class ReferenceDataSymbolsList
+    {
+        [JsonProperty("value")]
+        public List<ReferenceDataSymbol> value { get; set; }
+    }
+
+    public class ReferenceDataSymbol
+    {
+        [JsonProperty("UnderlyingSymbol")]
+        public string UnderlyingSymbol { get; set; }
+    }
+
+    public class ReferenceDataTypes : List<ReferenceDataType> { }
+
+
+    public class ReferenceDataTypesList
+    {
+        [JsonProperty("value")]
+        public List<ReferenceDataType> value { get; set; }
+    }
+
+    public class ReferenceDataType
+    {
+        public string id { get; set; }
+        [JsonProperty("type")]
+        public string type { get; set; }        
     }
 }

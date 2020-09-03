@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 
 namespace ESCO.Reference.Data.Model
-{     
-    public class Benchmarks
+{
+    public class Benchmarks : List<Benchmark> { }
+    public class BenchmarksList
     {
         [JsonProperty("value")]
         public List<Benchmark> value { get; set; }

@@ -1,5 +1,4 @@
-﻿using System;
-using ESCO.Reference.Data.Model;
+﻿using ESCO.Reference.Data.Model;
 using System.Threading.Tasks;
 
 namespace ESCO.Reference.Data.Services.Contracts
@@ -25,10 +24,11 @@ namespace ESCO.Reference.Data.Services.Contracts
 
         #region Instruments
         Task<SuggestedFields> getInstrumentsSuggestedFields(string schema);                                 //Obtiene una lista de campos sugeridos.
-        Task<Instruments> getInstrumentsTodayUpdated(string type, string source, string schema);      //Retorna la lista de instruments actualizados en el día.
+        Task<Instruments> getInstrumentsTodayUpdated(string type, string source, string schema);            //Retorna la lista de instruments actualizados en el día.
         Task<Instruments> getInstrumentsTodayAdded(string type, string source, string schema);              //Retorna la lista de instruments dados de alta en el día.
         Task<Instruments> getInstrumentsTodayRemoved(string type, string source, string schema);            //Retorna la lista de instruments dados de baja en el día.
-        Task<InstrumentsReport> getInstrumentsReport(string source, string schema);                         //Retorna un reporte resumido de instruments.
+        Task<InstrumentsReport> getInstrumentsReport(string source, string schema);                               //Retorna un reporte resumido de instruments.
+        Task<InstrumentsReport> searchInstrumentsReport(string id, string schema = null);                   // Retorna los instrumentos del reporte resumido contengan una cadena de búsqueda como parte del id.
         Task<Instrument> getInstrument(string id, string schema);                                           //Retorna una instrument por id.
         Task<Instruments> getInstruments(string type, string source, string schema);                        //Retorna una lista de instruments.  
         Task<Instruments> searchInstruments(string id, string schema);                                      // Retorna instrumentos que contenga al menos una parte del id específicado.
@@ -76,6 +76,8 @@ namespace ESCO.Reference.Data.Services.Contracts
         #region Derivatives
         Task<Derivatives> getDerivatives(string marketSegmentId, string underlyingSymbol);  //Retorna una lista de derivados
         Task<Derivatives> searchDerivatives(string id);                                     //Retorna una lista de derivados que contengan una cadena de búsqueda como parte del id.
+        Task<MarketSegments> getMarketSegments();                                           // Retorna una lista de Segmentos de mercado de derivados (MarketSegmentId).
+        Task<UnderlyingSymbols> getUnderlyingSymbols();                                     // Retorna una lista de Símbolos de derivados (underlyingSymbol).
         #endregion
 
         #region Funds
@@ -96,16 +98,19 @@ namespace ESCO.Reference.Data.Services.Contracts
         #endregion
 
         #region ESCO
-        Task<Custodians> getCustodians(string schema);      // Retorna la lista de Sociedades Depositarias  
-        Task<Managments> getManagements(string schema);     // Retorna la lista de Sociedades Administradoras
-        Task<Rents> getRentType(string schema);             // Retorna la lista de Tipos de Rentas      
-        Task<Regions> getRegions(string schema);            // Retorna la lista de Regiones      
-        Task<Currencys> getCurrencys(string schema);        // Retorna la lista de Monedas      
-        Task<Countrys> getCountrys(string schema);          // Retorna la lista de Países      
-        Task<Issuers> getIssuers(string schema);            // Retorna la lista de Issuers  
-        Task<Horizons> getHorizons(string schema);          // Retorna la lista de Horizon 
-        Task<FundTypes> getFundTypes(string schema);        // Retorna la lista de Tipos de Fondos
-        Task<Benchmarks> getBenchmarks(string schema);      // Retorna la lista de Benchmarks
+        Task<Custodians> getCustodians(string schema);                      // Retorna la lista de Sociedades Depositarias  
+        Task<Managments> getManagements(string schema);                     // Retorna la lista de Sociedades Administradoras
+        Task<Rents> getRentTypes(string schema);                            // Retorna la lista de Tipos de Rentas      
+        Task<Regions> getRegions(string schema);                            // Retorna la lista de Regiones      
+        Task<Currencys> getCurrencys(string schema);                        // Retorna la lista de Monedas      
+        Task<Countrys> getCountrys(string schema);                          // Retorna la lista de Países      
+        Task<Issuers> getIssuers(string schema);                            // Retorna la lista de Issuers  
+        Task<Horizons> getHorizons(string schema);                          // Retorna la lista de Horizon 
+        Task<FundTypes> getFundTypes(string schema);                        // Retorna la lista de Tipos de Fondos
+        Task<Benchmarks> getBenchmarks(string schema);                      // Retorna la lista de Benchmarks
+        Task<ReferenceDataTypes> getReferenceDataTypes(string schema);      // Retorna la lista de tipos de instrumentos financieros
+        Task<ReferenceDataSymbols> getReferenceDataSymbols(string schema);  // Retorna la lista de Símbolos (UnderlyingSymbol) de Instrumentos financieros
+        Task<Markets> getMarkets(string schema);                            // Retorna la lista de Mercados para los instrumentos financieros
         #endregion
     }
 }

@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace ESCO.Reference.Data.Model
-{     
-    public class Custodians
+{
+    public class Custodians : List<Custodian> { }
+    public class CustodiansList
     {
         [JsonProperty("value")]
         public List<Custodian> value { get; set; }

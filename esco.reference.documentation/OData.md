@@ -5,7 +5,7 @@ Métodos:
 **` getODataReferenceDatas`**
 ```
 	/// <summary>
-    /// Retorna la lista de instrumentos financieros filtrados con Query en formato ODat.
+    /// Retorna la lista de instrumentos financieros filtrados con Query en formato OData.
     /// </summary>
     /// <param name="query">(Optional) Query de filtrado en formato OData. Diccionario de campos disponible con el método getReferenceDataSpecification("2"). (Ejemplo de consulta:"?$top=5&$filter=type eq 'MF'&$select=Currency,Symbol,UnderlyingSymbol" </param>
     /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
@@ -26,16 +26,16 @@ Métodos:
 
 **` searchODataReferenceDatas`**
 ```
-    /// <summary>
-    /// Retorna la lista de instrumentos financieros filtrados por campos específicos (puede incluirse cadenas de búsqueda parcial).
-    /// </summary>
-    /// <param name="type">(Optional) Filtrar por tipo de Instrumentos.</param>
-    /// <param name="currency">(Optional) Filtrar por tipo de Moneda.</param>
-    /// <param name="symbol">(Optional) Filtrar por símbolo de Instrumentos.</param>
-    /// <param name="market">(Optional) Filtrar por Tipo de Mercado.</param>
-    /// <param name="country">(Optional) Filtrar por País.</param>
-    /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema "2".</param>
-    /// <returns>ReferenceDatas object Result.</returns>
+    /// <summary>    
+    /// Retorna la lista de instrumentos financieros filtrados por campos específicos (puede incluirse cadenas de búsqueda parcial).    
+    /// </summary>    
+    /// <param name="type">(Optional) Filtrar por tipo de Instrumentos financiero (Ej: "MF","FUT", "OPC", puede incluirse una cadena de búsqueda parcial.</param>    
+    /// <param name="currency">(Optional) Filtrar por tipo de Moneda. (Ej: "ARS", puede incluirse una cadena de búsqueda parcial)</param>    
+    /// <param name="symbol">(Optional) Filtrar por símbolo de Instrumentos (Ej: "AULA", puede incluirse una cadena de búsqueda parcial).</param>            
+    /// <param name="market">(Optional) Filtrar por Tipo de Mercado. (Ej "ROFX", "BYMA", puede incluirse una cadena de búsqueda parcial)</param>           
+    /// <param name="country">(Optional) Filtrar por nombre de País (Ej: "ARG", puede incluirse una cadena de búsqueda parcial).</param>    
+    /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema "2".</param>    
+    /// <returns>ReferenceDatas object Result.</returns>    
     public async Task<ODataReferenceDatas> searchODataReferenceDatas(
             string type = null, 
             string currency = null, 
@@ -145,4 +145,34 @@ Métodos:
     /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>    
     /// <returns>Benchmarks object Result.</returns>    
     public async Task<Benchmarks> getBenchmarks(string schema = null)    
+``` 
+
+**` getReferenceDataTypes`**
+``` 
+	/// <summary>
+    /// Retorna la lista de Tipos de Instrumentos financieros
+    /// </summary>
+    /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
+    /// <returns>ReferenceDataTypes object Result.</returns>
+    public async Task<ReferenceDataTypes> getReferenceDataTypes(string schema = null)
+``` 
+
+**` getReferenceDataSymbols`**
+``` 
+	/// <summary>
+    /// Retorna la lista de Símbolos (UnderlyingSymbol) de Instrumentos financieros
+    /// </summary>
+    /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
+    /// <returns>ReferenceDataTypes object Result.</returns>
+    public async Task<ReferenceDataSymbols> getReferenceDataSymbols(string schema = null)
+``` 
+
+**` getMarkets`**
+``` 
+	/// <summary>
+    /// Retorna la lista de Mercados para los Instrumentos financieros
+    /// </summary>
+    /// <param name="schema">(Optional) Id del esquema de devolución de la información. Si es null se toma por defecto el esquema activo.</param>
+    /// <returns>Markets object Result.</returns>
+    public async Task<Markets> getMarkets(string schema = null)
 ``` 

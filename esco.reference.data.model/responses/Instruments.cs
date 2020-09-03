@@ -12,22 +12,22 @@ namespace ESCO.Reference.Data.Model
         [JsonProperty("id")]
         public string id { get; set; }
 
-        [JsonProperty("schemaId")]
+        [JsonProperty("schemaId", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string schemaId { get; set; }
 
-        [JsonProperty("active")]
+        [JsonProperty("active", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public bool active { get; set; }
 
-        [JsonProperty("source")]
+        [JsonProperty("source", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public int source { get; set; }
 
-        [JsonProperty("type")]
+        [JsonProperty("type", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public int type { get; set; }
 
-        [JsonProperty("control")]
+        [JsonProperty("control", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public int control { get; set; }
 
-        [JsonProperty("properties")]
+        [JsonProperty("properties", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public List<Fields> properties { get; set; }    
     }
 
@@ -36,28 +36,28 @@ namespace ESCO.Reference.Data.Model
         [JsonProperty("id")]
         public string id { get; set; }     
 
-        [JsonProperty("source")]
+        [JsonProperty("source", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string source { get; set; }
 
-        [JsonProperty("properties")]
+        [JsonProperty("properties", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public dynamic properties { get; set; }
     }
 
     public class Fields
     {
-        [JsonProperty("fieldId")]
+        [JsonProperty("fieldId", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string fieldId { get; set; }
 
-        [JsonProperty("value")]
+        [JsonProperty("value", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string value { get; set; }
 
-        [JsonProperty("sourceValue")]
+        [JsonProperty("sourceValue", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string sourceValue { get; set; }       
 
-        [JsonProperty("origin")]
+        [JsonProperty("origin", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public int origin { get; set; }
 
-        [JsonProperty("control")]
+        [JsonProperty("control", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public int control { get; set; }
     }
 }

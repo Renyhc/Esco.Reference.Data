@@ -69,6 +69,8 @@
     <Compile Include="responses\Issuers.cs" />
     <Compile Include="responses\Managment.cs" />
     <Compile Include="responses\Mappings.cs" />
+    <Compile Include="responses\Markets.cs" />
+    <Compile Include="responses\MarketSegments.cs" />
     <Compile Include="responses\ReferenceData.cs" />
     <Compile Include="responses\Region.cs" />
     <Compile Include="responses\Rents.cs" />
@@ -81,6 +83,7 @@
     <Compile Include="responses\Status.cs" />
     <Compile Include="responses\Suggested.cs" />
     <Compile Include="responses\Types.cs" />
+    <Compile Include="responses\UnderlyingSymbol.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="nuget.config" />

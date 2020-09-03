@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="config\Api.cs" />
     <Compile Include="config\Config.cs" />
     <Compile Include="contracts\IReferenceDataServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
