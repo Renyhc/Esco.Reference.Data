@@ -4,6 +4,8 @@
 
 Conector que se integra con el Servicio [**Primary Information Reference**](https://i.primary.com.ar/) que ofrece Provisión automática de las características de los valores negociables de los distintos segmentos disponibles de las principales fuentes del mercado de capitales, como así también información de los Fondos Comunes de Inversión publicados en la CAFCI.
 
+**` Development by .NET 6.0`**
+
 #### DESCRIPCIÓN DE MÉTODOS
 
 - [Reference Data](esco.reference.documentation/ReferenceData.md)
